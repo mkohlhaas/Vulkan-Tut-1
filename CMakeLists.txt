@@ -6,6 +6,6 @@ find_package(Vulkan REQUIRED)
 
 add_subdirectory(glfw)
 
-add_executable(${PROJECT_NAME} src/main.c)
+add_executable(${PROJECT_NAME} src/main.c src/window.c)
 target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)
