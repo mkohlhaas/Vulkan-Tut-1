@@ -1,0 +1,637 @@
+digraph Vulkan {
+  newrank=true;
+  rankdir=LR;
+  bgcolor=grey94;
+  Node [
+    shape=record;
+    style="rounded,filled,bold";
+    fillcolor="lightgrey";
+  ];
+  // create window
+  subgraph cluster_CreateWindow {
+    label="1. Create Window";
+    glfwCreateWindow [
+      color=blue;
+    ];
+    glfwCreateWindow -> GLFWwindow [
+      constraint=false;
+    ];
+  }
+  // create instance
+  subgraph cluster_CreateInstance {
+    label="2. Create Instance - open Vulkan™ library";
+    VkInstanceCreateInfo [
+      color=red;
+      label="VkInstanceCreateInfo";
+    ];
+    VkInstanceCreateInfoContent [
+      label="<VkApplicationInfo>Application Info| <ExtensionNames>Extension Names| Validation Layer Names";
+    ];
+    VkInstanceCreateInfo -> VkInstanceCreateInfoContent;
+    VkInstanceCreateInfoContent:VkApplicationInfo -> VkApplicationInfo;
+    VkApplicationInfo [
+      color=red;
+    ];
+    VkApplicationInfo -> VkApplicationInfoContent;
+    VkApplicationInfoContent [
+      label="Application Name|Application Version| Engine Version| Api Version";
+    ];
+    vkCreateInstance [
+      color=blue;
+    ];
+    VkInstanceCreateInfo -> vkCreateInstance;
+    VkInstance [
+      color=red;
+    ];
+    glfwGetRequiredInstanceExtensions [
+      color=blue;
+    ];
+    glfwGetRequiredInstanceExtensions -> VkInstanceCreateInfoContent:ExtensionNames;
+    vkCreateInstance -> VkInstance;
+  }
+  // check validation layerse
+  subgraph cluster_ValidationLayer {
+    label="3. Check Validation Layer Support";
+    vkEnumerateInstanceLayerProperties [
+      color=blue;
+    ];
+    VkLayerProperties [
+      color=red;
+    ];
+    vkEnumerateInstanceLayerProperties -> VkLayerProperties;
+    VkLayerPropertiesContent [
+      label="Name | Description";
+    ];
+    VkLayerProperties -> VkLayerPropertiesContent;
+  }
+  subgraph cluster_DebugMessenger {
+    label="4. Setup Debug Messenger";
+    vkCreateDebugUtilsMessengerEXT [
+      color=blue;
+    ];
+    VkDebugUtilsMessengerCreateInfoEXTContent [
+      label="Message Severity (Warning, Error, ...)| Message Type (Validation, Performance, ...) | Callback Function (e.g. print error message)";
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT [
+      color=red;
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT -> VkDebugUtilsMessengerCreateInfoEXTContent;
+    vkCreateDebugUtilsMessengerEXT [
+      color=blue;
+    ];
+    VkDebugUtilsMessengerCreateInfoEXT -> vkCreateDebugUtilsMessengerEXT;
+  }
+  subgraph cluster_CreateSurface {
+    label="5. Create Surface - platform independent window";
+    glfwCreateWindowSurface [
+      color=blue;
+    ];
+    GLFWwindow -> glfwCreateWindowSurface;
+    VkSurfaceKHR [
+      color=red;
+    ];
+    glfwCreateWindowSurface -> VkSurfaceKHR;
+    VkInstance -> glfwCreateWindowSurface;
+  }
+  subgraph cluster_PhysicalDevice {
+    label="6. Pick Physical Device";
+    vkEnumeratePhysicalDevices [
+      color=blue;
+    ];
+    VkPhysicalDevice [
+      color=red;
+    ];
+    vkEnumeratePhysicalDevices -> VkPhysicalDevice;
+    // Physical Device Properties
+    VkPhysicalDeviceProperties [
+      color=red;
+    ];
+    VkPhysicalDevicePropertiesContent [
+      label="Vendor ID | Device ID | <limits>Limits";
+    ];
+    VkPhysicalDeviceLimits [
+      color=red;
+    ];
+    VkPhysicalDevicePropertiesContent:limits -> VkPhysicalDeviceLimits;
+    VkPhysicalDeviceLimitsContents [
+      label="maxImageDimension1D| maxImageDimension2D";
+    ];
+    VkPhysicalDeviceLimits -> VkPhysicalDeviceLimitsContents;
+    VkPhysicalDeviceProperties -> VkPhysicalDevicePropertiesContent;
+    vkGetPhysicalDeviceProperties [
+      color=blue;
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceProperties;
+    vkGetPhysicalDeviceProperties -> VkPhysicalDeviceProperties;
+    // Physical Device Features
+    VkPhysicalDeviceFeatures [
+      color=red;
+    ];
+    VkPhysicalDeviceFeaturesContent [
+      label="geometryShader | tessellationShader";
+    ];
+    VkPhysicalDeviceFeatures -> VkPhysicalDeviceFeaturesContent;
+    vkGetPhysicalDeviceFeatures [
+      color=blue;
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceFeatures;
+    vkGetPhysicalDeviceFeatures -> VkPhysicalDeviceFeatures;
+  }
+  // queue families
+  subgraph cluster_QueueFamilies {
+    label="7. Queue Families - set of queues with identical properties";
+    vkGetPhysicalDeviceQueueFamilyProperties [
+      color=blue;
+    ];
+    VkQueueFamilyProperties [
+      color=red;
+    ];
+    VkQueueFamilyPropertiesContent [
+      label="<VkQueueFlags>Queue Flags | Queue Count";
+    ];
+    VkQueueFlags [
+      color=red;
+    ];
+    VkQueueFlagsContent [
+      label="graphics | compute| transfer";
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceQueueFamilyProperties [
+      color=red;
+    ];
+    vkGetPhysicalDeviceQueueFamilyProperties -> VkQueueFamilyProperties;
+    VkQueueFamilyProperties -> VkQueueFamilyPropertiesContent;
+    VkQueueFamilyPropertiesContent:VkQueueFlags -> VkQueueFlags;
+    VkQueueFlags -> VkQueueFlagsContent;
+    // surface support
+    vkGetPhysicalDeviceSurfaceSupportKHR [
+      color=blue;
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceSurfaceSupportKHR [
+      color=red;
+    ];
+    VkSurfaceKHR -> vkGetPhysicalDeviceSurfaceSupportKHR;
+    vkGetPhysicalDeviceSurfaceSupportKHR -> Supported;
+  }
+  // create logical device
+  subgraph cluster_CreateLogicalDevice {
+    label="8. Create Logical Device";
+    vkCreateDevice [
+      color=blue;
+    ];
+    VkDeviceCreateInfo [
+      color=red;
+    ];
+    VkDeviceQueueCreateInfo [
+      color=red;
+    ];
+    VkDevice [
+      color=red;
+    ];
+    VkPhysicalDevice -> vkCreateDevice [
+      color=red;
+    ];
+    VkDeviceCreateInfo -> vkCreateDevice;
+    vkCreateDevice -> VkDevice;
+    VkDeviceCreateInfoContent [
+      label="<Queue>Queue | Validation Layers | Extensions | Features";
+    ];
+    VkDeviceCreateInfo -> VkDeviceCreateInfoContent;
+    VkDeviceQueueCreateInfoContent [
+      label="<QueueFamilyIndex>Queue Family Index | Queue Count";
+    ];
+    VkDeviceQueueCreateInfo -> VkDeviceQueueCreateInfoContent;
+    VkDeviceCreateInfoContent:Queue -> VkDeviceQueueCreateInfo;
+    VkQueueFamilyProperties -> VkDeviceQueueCreateInfoContent:QueueFamilyIndex [
+      label="queue index";
+    ];
+    vkGetDeviceQueue [
+      color=blue;
+    ];
+    VkDevice -> vkGetDeviceQueue;
+    vkGetDeviceQueue -> VkQueue;
+  }
+  subgraph cluster_CreateSwapChain {
+    label="9. Create Swap Chain - queue of images to be presented to the screen";
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR [
+      color=blue;
+    ];
+    VkSurfaceCapabilitiesKHR [
+      color=red;
+    ];
+    VkSurfaceCapabilitiesKHRContent [
+      label="minImageCount | maxImageCount";
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceSurfaceCapabilitiesKHR [
+      color=red;
+    ];
+    VkSurfaceKHR -> vkGetPhysicalDeviceSurfaceCapabilitiesKHR;
+    vkGetPhysicalDeviceSurfaceCapabilitiesKHR -> VkSurfaceCapabilitiesKHR;
+    VkSurfaceCapabilitiesKHR -> VkSurfaceCapabilitiesKHRContent;
+    vkGetPhysicalDeviceSurfaceFormatsKHR [
+      color=blue;
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceSurfaceFormatsKHR [
+      color=red;
+    ];
+    VkSurfaceKHR -> vkGetPhysicalDeviceSurfaceFormatsKHR;
+    VkSurfaceFormatKHR [
+      color=red;
+    ];
+    vkGetPhysicalDeviceSurfaceFormatsKHR -> VkSurfaceFormatKHR;
+    VkSurfaceFormatKHRContent [
+      label="Format | Color Space";
+    ];
+    VkSurfaceFormatKHR -> VkSurfaceFormatKHRContent;
+    vkGetPhysicalDeviceSurfacePresentModesKHR [
+      color=blue;
+    ];
+    VkPresentModeKHR [
+      color=red;
+    ];
+    VkPhysicalDevice -> vkGetPhysicalDeviceSurfacePresentModesKHR [
+      color=red;
+    ];
+    VkSurfaceKHR -> vkGetPhysicalDeviceSurfacePresentModesKHR;
+    vkGetPhysicalDeviceSurfacePresentModesKHR -> VkPresentModeKHR;
+    VkPresentModeKHRContent [
+      label="immediate| mailbox| fifo| fifo relaxed";
+    ];
+    VkPresentModeKHR -> VkPresentModeKHRContent;
+    vkCreateSwapchainKHR [
+      color=blue;
+    ];
+    VkDevice -> vkCreateSwapchainKHR [
+      color=red;
+    ];
+    VkSwapchainKHR [
+      color=red;
+    ];
+    VkSwapchainCreateInfoKHR [
+      color=red;
+    ];
+    VkSwapchainCreateInfoKHRContent [
+      label="<Surface>Surface | <SurfaceFormat>Surface Format | <SurfaceCapabilities>Surface Capabilities | <PresentationMode>Presentation Mode";
+    ];
+    VkSwapchainCreateInfoKHR -> VkSwapchainCreateInfoKHRContent;
+    VkSwapchainCreateInfoKHR -> vkCreateSwapchainKHR;
+    vkCreateSwapchainKHR -> VkSwapchainKHR;
+    VkSwapchainCreateInfoKHRContent:Surface -> VkSurfaceKHR;
+    vkGetSwapchainImagesKHR [
+      color=blue;
+    ];
+    VkDevice -> vkGetSwapchainImagesKHR [
+      color=red;
+    ];
+    VkSwapchainKHR -> vkGetSwapchainImagesKHR;
+    VkImage [
+      color=red;
+    ];
+    vkGetSwapchainImagesKHR -> VkImage;
+  }
+  subgraph cluster_CreateImageViews {
+    label="10. Create Image Views - lens for viewing images";
+    vkCreateImageView [
+      color=blue;
+    ];
+    VkDevice -> vkCreateImageView [
+      color=red;
+    ];
+    VkImageView [
+      color=red;
+    ];
+    vkCreateImageView -> VkImageView;
+    VkImageViewCreateInfo [
+      color=red;
+    ];
+    VkImageViewCreateInfoContent [
+      label="<Image>Image";
+    ];
+    VkImageViewCreateInfo -> VkImageViewCreateInfoContent;
+    VkImageViewCreateInfo -> vkCreateImageView;
+    VkImageViewCreateInfoContent:Image -> VkImage;
+  }
+  subgraph cluster_CreateRenderPass {
+    label="11. Create Render Pass - for defining subpass dependencies";
+    href="https://i.stack.imgur.com/K0NRD.png";
+    vkCreateRenderPass [
+      color=blue;
+    ];
+    VkRenderPassCreateInfo [
+      color=red;
+    ];
+    VkRenderPassCreateInfoContent [
+      label="<ColorAttachments>Color Attachments | <Subpasses>Subpasses | <SubpassDependencies>Subpass Dependencies";
+    ];
+    VkRenderPassCreateInfo -> VkRenderPassCreateInfoContent;
+    VkRenderPassCreateInfo -> vkCreateRenderPass;
+    VkAttachmentDescription [
+      color=red;
+    ];
+    VkAttachmentReference [
+      color=red;
+    ];
+    VkSubpassDescription [
+      color=red;
+    ];
+    VkSubpassDependency [
+      color=red;
+    ];
+    VkRenderPassCreateInfoContent:ColorAttachments -> VkAttachmentDescription;
+    VkRenderPassCreateInfoContent:Subpasses -> VkSubpassDescription;
+    VkRenderPassCreateInfoContent:SubpassDependencies -> VkSubpassDependency;
+    VkSubpassDescriptionContent [
+      label="<ColorAttachments>Color Attachment";
+    ];
+    VkSubpassDescription -> VkSubpassDescriptionContent;
+    VkSubpassDescriptionContent:ColorAttachments -> VkAttachmentReference;
+    VkRenderPass [
+      color=red;
+    ];
+    vkCreateRenderPass -> VkRenderPass;
+  }
+  subgraph cluster_CreateGraphicsPipeline {
+    label="12. Create Graphics Pipeline";
+    href="https://vulkan-tutorial.com/images/vulkan_simplified_pipeline.svg";
+    vkCreateShaderModule [
+      color=blue;
+    ];
+    VkShaderModule [
+      color=red;
+    ];
+    VkShaderModuleCreateInfo [
+      color=red;
+    ];
+    VkShaderModuleCreateInfo -> vkCreateShaderModule;
+    VkDevice -> vkCreateShaderModule [
+      color=red;
+    ];
+    vkCreateShaderModule -> VkShaderModule;
+    VkShaderModuleCreateInfoContent [
+      label="Shader Code | Code Size";
+    ];
+    VkShaderModuleCreateInfo -> VkShaderModuleCreateInfoContent;
+    VkPipelineShaderStageCreateInfo [
+      color=red;
+    ];
+    VkPipelineVertexInputStateCreateInfo [
+      label="Vertex Input";
+      color=red;
+    ];
+    VkPipelineInputAssemblyStateCreateInfo [
+      label="Input Assembly";
+      color=red;
+    ];
+    VkPipelineViewportStateCreateInfo [
+      label="Viewport";
+      color=red;
+    ];
+    VkPipelineRasterizationStateCreateInfo [
+      label="Rasterization";
+      color=red;
+    ];
+    VkPipelineMultisampleStateCreateInfo [
+      label="Multisample";
+      color=red;
+    ];
+    VkPipelineColorBlendAttachmentState [
+      label="Color Blend Attachment";
+      color=red;
+    ];
+    VkPipelineColorBlendStateCreateInfo [
+      label="Color Blend";
+      color=red;
+    ];
+    VkPipelineDynamicStateCreateInfo [
+      label="Dynamic";
+      color=red;
+    ];
+    VkPipelineLayoutCreateInfo [
+      color=red;
+    ];
+    vkCreatePipelineLayout [
+      color=blue;
+    ];
+    VkPipelineLayoutCreateInfo -> vkCreatePipelineLayout;
+    VkDevice -> vkCreatePipelineLayout [
+      color=red;
+    ];
+    VkDevice -> vkCreateGraphicsPipelines [
+      color=red;
+    ];
+    VkGraphicsPipelineCreateInfo [
+      color=red;
+    ];
+    vkCreateGraphicsPipelines [
+      color=blue;
+    ];
+    VkGraphicsPipelineCreateInfo -> VkPipelineVertexInputStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineInputAssemblyStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineViewportStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineRasterizationStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineMultisampleStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineColorBlendStateCreateInfo;
+    VkGraphicsPipelineCreateInfo -> VkPipelineDynamicStateCreateInfo;
+    VkPipelineColorBlendStateCreateInfo -> VkPipelineColorBlendAttachmentState;
+    VkGraphicsPipelineCreateInfo -> VkPipelineShaderStageCreateInfo;
+    VkGraphicsPipelineCreateInfo -> vkCreateGraphicsPipelines;
+    VkGraphicsPipelineCreateInfo -> VkRenderPass;
+    VkPipelineShaderStageCreateInfo -> VkShaderModule;
+    VkPipelineLayout [
+      color=red;
+    ];
+    vkCreatePipelineLayout -> VkPipelineLayout;
+    VkPipeline [
+      color=red;
+    ];
+    vkCreateGraphicsPipelines -> VkPipeline;
+  }
+  subgraph cluster_CreateFramebuffers {
+    label="13. Create Framebuffers (frame buffer & render pass = render target)";
+    href="https://i.stack.imgur.com/K0NRD.png";
+    vkCreateFramebuffer [
+      color=blue;
+    ];
+    VkFramebuffer [
+      color=red;
+    ];
+    vkCreateFramebuffer -> VkFramebuffer;
+    VkDevice -> vkCreateFramebuffer [
+      color=red;
+    ];
+    VkFramebufferCreateInfo [
+      color=red;
+    ];
+    VkFramebufferCreateInfo -> vkCreateFramebuffer;
+    VkFramebufferCreateInfoContent [
+      label="<Renderpass>Renderpass | <Attachments>Attachments | Width | Height";
+    ];
+    VkFramebufferCreateInfoContent:Renderpass -> VkRenderPass;
+    VkFramebufferCreateInfo -> VkFramebufferCreateInfoContent;
+    VkFramebufferCreateInfoContent:Attachments -> VkImageView;
+  }
+  subgraph cluster_CreateCommandPool {
+    label="14. Create Command Pool";
+    vkCreateCommandPool [
+      color=blue;
+    ];
+    VkCommandPoolCreateInfo [
+      color=red;
+    ];
+    VkDevice -> vkCreateCommandPool [
+      color=red;
+    ];
+    VkCommandPoolCreateInfoContent [
+      label="<QueueFamilyIndex>Queue Family Index";
+    ];
+    VkCommandPoolCreateInfo -> vkCreateCommandPool;
+    VkCommandPoolCreateInfo -> VkCommandPoolCreateInfoContent;
+    VkCommandPoolCreateInfoContent:QueueFamilyIndex -> VkQueueFamilyProperties;
+    VkCommandPool [
+      color=red;
+    ];
+    vkCreateCommandPool -> VkCommandPool;
+  }
+  subgraph cluster_CreateCommandBuffers {
+    label="15. Create Command Buffers";
+    VkCommandBufferAllocateInfo [
+      color=red;
+    ];
+    VkCommandBufferAllocateInfoContent [
+      label="<CommandPool>Command Pool | Command Buffer Count";
+    ];
+    VkCommandBufferAllocateInfo -> VkCommandBufferAllocateInfoContent;
+    vkAllocateCommandBuffers [
+      color=blue;
+    ];
+    VkDevice -> vkAllocateCommandBuffers [
+      color=red;
+    ];
+    VkCommandBufferAllocateInfo -> vkAllocateCommandBuffers;
+    VkCommandBufferAllocateInfoContent:CommandPool -> VkCommandPool;
+    VkCommandBuffer [
+      color=red;
+    ];
+    vkAllocateCommandBuffers -> VkCommandBuffer;
+  }
+  subgraph cluster_CreateSyncObjects {
+    label="16. Create Sync Objects";
+    vkCreateSemaphore [
+      color=blue;
+    ];
+    vkCreateFence [
+      color=blue;
+    ];
+    VkFenceCreateInfo [
+      color=red;
+    ];
+    VkSemaphoreCreateInfo [
+      color=red;
+    ];
+    VkDevice -> vkCreateSemaphore [
+      color=red;
+    ];
+    VkDevice -> vkCreateFence [
+      color=red;
+    ];
+    VkSemaphore [
+      color=red;
+    ];
+    VkFence [
+      color=red;
+    ];
+    vkCreateSemaphore -> VkSemaphore;
+    vkCreateFence -> VkFence;
+    VkSemaphoreCreateInfo -> vkCreateSemaphore;
+    VkFenceCreateInfo -> vkCreateFence;
+  }
+  subgraph cluster_DrawFrame {
+    label="17. Draw Frame - called from the main loop";
+    VkDevice -> code:vkWaitForFences [
+      color=red;
+    ];
+    VkFence -> code:vkWaitForFences;
+    VkDevice -> code:vkResetFences [
+      color=red;
+    ];
+    VkFence -> code:vkResetFences;
+    VkDevice -> code:vkAcquireNextImageKHR [
+      color=red;
+    ];
+    VkSwapchainKHR -> code:vkAcquireNextImageKHR;
+    VkSemaphore -> code:vkAcquireNextImageKHR;
+    VkCommandBuffer -> code:vkResetCommandBuffer;
+    VkCommandBuffer -> code:vkBeginCommandBuffer;
+    VkCommandBuffer -> code:vkCmdBeginRenderPass;
+    VkCommandBuffer -> code:vkCmdBindPipeline;
+    VkCommandBuffer -> code:vkCmdSetViewport;
+    VkCommandBuffer -> code:vkCmdSetScissor;
+    VkCommandBuffer -> code:vkCmdDraw;
+    VkCommandBuffer -> code:vkCmdEndRenderPass;
+    VkCommandBuffer -> code:vkEndCommandBuffer;
+    VkQueue -> code:vkQueueSubmit;
+    VkQueue -> code:vkQueuePresentKHR;
+    code [
+      label="<vkWaitForFences>vkWaitForFences | <vkResetFences>vkResetFences | <vkAcquireNextImageKHR>vkAcquireNextImageKHR | <vkResetCommandBuffer>vkResetCommandBuffer | <vkBeginCommandBuffer>vkBeginCommandBuffer| <vkCmdBeginRenderPass>vkCmdBeginRenderPass | <vkCmdBindPipeline>vkCmdBindPipeline  | <vkCmdSetViewport>vkCmdSetViewport |<vkCmdSetScissor>vkCmdSetScissor | <vkCmdDraw>vkCmdDraw | <vkCmdEndRenderPass>vkCmdEndRenderPass | <vkEndCommandBuffer>vkEndCommandBuffer | <vkQueueSubmit>vkQueueSubmit | <vkQueuePresentKHR>vkQueuePresentKHR";
+    ];
+    VkCommandBufferBeginInfo [
+      color=red;
+    ];
+    VkCommandBufferBeginInfoContent [
+      label="Flags | one_time_submit | render_pass_continue | simultaneous_use";
+    ];
+    VkCommandBufferBeginInfo -> VkCommandBufferBeginInfoContent;
+    code:vkBeginCommandBuffer -> VkCommandBufferBeginInfo;
+    VkPipeline -> code:vkCmdBindPipeline;
+    VkRenderPassBeginInfo [
+      color=red;
+    ];
+    VkRenderPassBeginInfoContent [
+      label="<RenderPass>Render Pass | <Framebuffer>Framebuffer | Render Offset | Render Extent";
+    ];
+    VkRenderPassBeginInfo -> VkRenderPassBeginInfoContent;
+    code:vkCmdBeginRenderPass -> VkRenderPassBeginInfo;
+    VkRenderPass -> VkRenderPassBeginInfoContent:RenderPass;
+    VkFramebuffer -> VkRenderPassBeginInfoContent:Framebuffer;
+    code:vkCmdSetViewport -> VkViewport;
+    VkViewport [
+      color=red;
+    ];
+    VkViewportContent [
+      label="x | y | width | height | minDepth | maxDepth";
+    ];
+    VkViewport -> VkViewportContent;
+    VkPipelineDynamicStateCreateInfo -> code:vkCmdSetViewport [
+      label="viewport";
+      color=orange;
+    ];
+    VkPipelineDynamicStateCreateInfo -> code:vkCmdSetScissor [
+      label="scissor";
+      color=orange;
+    ];
+    VkRect2D [
+      color=red;
+    ];
+    VkRect2DContent [
+      label="Offset | Extent";
+    ];
+    VkRect2D -> VkRect2DContent;
+    code:vkCmdSetScissor -> VkRect2D;
+    VkSubmitInfo [
+      color=red;
+    ];
+    VkSubmitInfoContent [
+      label="Wait Semaphores | Command Buffers | Signal Semaphores";
+    ];
+    VkSubmitInfo -> VkSubmitInfoContent;
+    code:vkQueueSubmit -> VkSubmitInfo;
+    VkPresentInfoKHR [
+      color=red;
+    ];
+    VkPresentInfoKHRContent [
+      label="Wait Semaphores | Swapchains";
+    ];
+    VkPresentInfoKHR -> VkPresentInfoKHRContent;
+    code:vkQueuePresentKHR -> VkPresentInfoKHR;
+  }
+  { rank=same; glfwCreateWindow; vkCreateInstance; vkEnumerateInstanceLayerProperties; vkCreateDebugUtilsMessengerEXT; vkCreateDebugUtilsMessengerEXT; glfwCreateWindowSurface; vkEnumeratePhysicalDevices; vkGetPhysicalDeviceQueueFamilyProperties; vkCreateDevice; vkCreateSwapchainKHR; vkCreateImageView; vkCreateRenderPass; vkCreateGraphicsPipelines; vkCreateFramebuffer; vkCreateCommandPool; vkAllocateCommandBuffers; vkCreateSemaphore; vkCreateFence; }
+}
