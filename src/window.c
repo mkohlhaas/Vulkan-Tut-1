@@ -1,11 +1,13 @@
-#include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-GLFWwindow *window;
+#define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
 
 #define WIDTH 800
 #define HEIGHT 600
+
+static GLFWwindow *window;
 
 static void error_callback(int error, const char *description) {
   fprintf(stderr, "GLFW Error: %s\n", description);
@@ -25,7 +27,7 @@ void initGlfw() {
     exit(EXIT_FAILURE);
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  window = glfwCreateWindow(WIDTH, HEIGHT, "Simple example", NULL, NULL);
+  window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Tutorial", NULL, NULL);
   if (!window) {
     glfwTerminate();
     exit(EXIT_FAILURE);
