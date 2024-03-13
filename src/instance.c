@@ -3,9 +3,17 @@
 #include <stdio.h>
 #include <vulkan/vulkan_core.h>
 
-VkInstance instance;
+VkInstance instance = VK_NULL_HANDLE;
 
 #ifndef NDEBUG
+#include <stdlib.h>
+#include <string.h>
+
+VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
+
+static const char *requiredValidationLayers[] = {"VK_LAYER_KHRONOS_validation" /* bundle of validation layers */};
+
+// print debug messages to console
 static VkBool32 debugUtilsMessengerCB(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
                                       VkDebugUtilsMessageTypeFlagsEXT messageTypes,
                                       const VkDebugUtilsMessengerCallbackDataEXT *pCallbackData, void *pUserData) {
@@ -26,7 +34,7 @@ static VkBool32 debugUtilsMessengerCB(VkDebugUtilsMessageSeverityFlagBitsEXT mes
   return VK_FALSE;
 }
 
-static VkDebugUtilsMessengerCreateInfoEXT debugUtilsMessengerCreateInfoEXT = {
+static const VkDebugUtilsMessengerCreateInfoEXT debugUtilsMessengerCreateInfoEXT = {
     .sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
     .messageSeverity = VK_DEBUG_UTILS_MESSAGE_SEVERITY_VERBOSE_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT |
                        VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT,
@@ -42,7 +50,7 @@ static void printRequiredGlfwExtensions(const char **glfwExtensions, uint32_t gl
   }
 }
 
-static void printInstanceExtensions() {
+static void printAvailableInstanceExtensions() {
   uint32_t propertyCount;
   EH(vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, nullptr));
   VkExtensionProperties properties[propertyCount];
@@ -54,8 +62,34 @@ static void printInstanceExtensions() {
   };
 }
 
+static void printAvailableInstanceLayers() {
+  uint32_t propertyCount;
+  EH(vkEnumerateInstanceLayerProperties(&propertyCount, nullptr));
+  VkLayerProperties properties[propertyCount];
+  EH(vkEnumerateInstanceLayerProperties(&propertyCount, properties));
+
+  fprintf(stderr, "Instance Layers\n");
+  for (int i = 0; i < propertyCount; i++) {
+    fprintf(stderr, "%3d: %s (%s)\n", i + 1, properties[i].layerName, properties[i].description);
+  };
+}
+
+// Sets `debugMessenger` variable.
+static void createDebugMessenger() {
+  PFN_vkCreateDebugUtilsMessengerEXT createDebugUtilsMessenger =
+      (PFN_vkCreateDebugUtilsMessengerEXT)glfwGetInstanceProcAddress(instance, "vkCreateDebugUtilsMessengerEXT");
+  if (createDebugUtilsMessenger) {
+    EH(createDebugUtilsMessenger(instance, &debugUtilsMessengerCreateInfoEXT, nullptr, &debugMessenger));
+  } else {
+    fprintf(stderr, "Couldn't create debug messenger!\n");
+    exit(EXIT_FAILURE);
+  }
+}
+
 #endif
 
+// Open Vulkan library.
+// Sets `instance` variable.
 void initVulkan() {
   dbgPrint("Initializing Vulkan…\n");
 
@@ -69,7 +103,8 @@ void initVulkan() {
 
 #ifndef NDEBUG
   printRequiredGlfwExtensions(glfwExtensions, glfwExtensionCount);
-  printInstanceExtensions();
+  printAvailableInstanceExtensions();
+  printAvailableInstanceLayers();
 #endif
 
   // create Vulkan instance
@@ -78,17 +113,32 @@ void initVulkan() {
       .apiVersion = VK_API_VERSION_1_3,
   };
 
+#ifndef NDEBUG
+  const char *requiredExtensions[glfwExtensionCount + 1];
+  memcpy(requiredExtensions, glfwExtensions, glfwExtensionCount * sizeof(char *));
+  requiredExtensions[glfwExtensionCount] = VK_EXT_DEBUG_UTILS_EXTENSION_NAME; // debug messages for all messages
+  VkInstanceCreateInfo instanceCreateInfo = {
+    .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+    .enabledExtensionCount = glfwExtensionCount + 1,
+    .ppEnabledExtensionNames = requiredExtensions,
+    .pApplicationInfo = &applicationInfo,
+    .pNext = &debugUtilsMessengerCreateInfoEXT, // debug messages only during Vulkan startup and shutdown
+    .enabledLayerCount = sizeof(requiredValidationLayers) / sizeof(char *),
+    .ppEnabledLayerNames = requiredValidationLayers,
+#else
   VkInstanceCreateInfo instanceCreateInfo = {
       .sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
       .enabledExtensionCount = glfwExtensionCount,
       .ppEnabledExtensionNames = glfwExtensions,
       .pApplicationInfo = &applicationInfo,
-#ifndef NDEBUG
-      .pNext = &debugUtilsMessengerCreateInfoEXT,
 #endif
   };
 
   EH(vkCreateInstance(&instanceCreateInfo, nullptr, &instance));
 
   dbgPrint("Vulkan instance created!\n");
+
+#ifndef NDEBUG
+  createDebugMessenger();
+#endif
 }
