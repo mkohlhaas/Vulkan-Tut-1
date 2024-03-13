@@ -1,10 +1,9 @@
+#include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <GLFW/glfw3.h>
-
-#define WIDTH 800
-#define HEIGHT 600
+const int WIDTH = 800;
+const int HEIGHT = 600;
 
 static GLFWwindow *window;
 
@@ -32,11 +31,13 @@ void initGlfw() {
   glfwSetKeyCallback(window, key_callback);
 }
 
+void cleanupGlfw() {
+  glfwDestroyWindow(window);
+  glfwTerminate();
+}
+
 void mainLoop() {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
   }
-
-  glfwDestroyWindow(window);
-  glfwTerminate();
 }
