@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan_core.h>
+#include <stdio.h>
 
 extern VkResult err;
 
