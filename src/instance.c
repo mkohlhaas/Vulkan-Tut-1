@@ -1,7 +1,6 @@
+#include "error.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
 VkInstance instance;
@@ -24,7 +23,6 @@ static VkBool32 debugUtilsMessengerCB(VkDebugUtilsMessageSeverityFlagBitsEXT mes
                       : "                      ";
 
   fprintf(stderr, "Vulkan %s %s %s\n", msgSeverity, msgType, pCallbackData->pMessage);
-
   return VK_FALSE;
 }
 
@@ -46,17 +44,9 @@ static void printRequiredGlfwExtensions(const char **glfwExtensions, uint32_t gl
 
 static void printInstanceExtensions() {
   uint32_t propertyCount;
-  VkResult err = vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, nullptr);
-  if (err) {
-    fprintf(stderr, "Error: %s in line %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-  }
+  EH(vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, nullptr));
   VkExtensionProperties properties[propertyCount];
-  err = vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, properties);
-  if (err) {
-    fprintf(stderr, "Error: %s in line %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-  }
+  EH(vkEnumerateInstanceExtensionProperties(nullptr, &propertyCount, properties));
 
   fprintf(stderr, "Instance Extensions\n");
   for (int i = 0; i < propertyCount; i++) {
@@ -67,14 +57,11 @@ static void printInstanceExtensions() {
 #endif
 
 void initVulkan() {
+  dbgPrint("Initializing Vulkan…\n");
 
-#ifndef NDEBUG
-  fprintf(stderr, "Initializing Vulkan…\n");
-#endif
-
+  // by GLFW required extensions
   uint32_t glfwExtensionCount;
   const char **glfwExtensions;
-
   glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
   if (!glfwExtensions) {
     fprintf(stderr, "GLFW Error: %s in line %d\n", __FILE__, __LINE__);
@@ -85,6 +72,7 @@ void initVulkan() {
   printInstanceExtensions();
 #endif
 
+  // create Vulkan instance
   VkApplicationInfo applicationInfo = {
       .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
       .apiVersion = VK_API_VERSION_1_3,
@@ -100,40 +88,7 @@ void initVulkan() {
 #endif
   };
 
-  VkResult err = vkCreateInstance(&instanceCreateInfo, nullptr, &instance);
+  EH(vkCreateInstance(&instanceCreateInfo, nullptr, &instance));
 
-  switch (err) {
-  case VK_SUCCESS:
-#ifndef NDEBUG
-    fprintf(stderr, "Vulkan instance created!\n");
-#endif
-    break;
-  case VK_ERROR_OUT_OF_HOST_MEMORY:
-    fprintf(stderr, "Error creating Vulkan instance: out of host memory in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  case VK_ERROR_OUT_OF_DEVICE_MEMORY:
-    fprintf(stderr, "Error creating Vulkan instance: out of device memory in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  case VK_ERROR_INITIALIZATION_FAILED:
-    fprintf(stderr, "Error creating Vulkan instance: initialization failed in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  case VK_ERROR_LAYER_NOT_PRESENT:
-    fprintf(stderr, "Error creating Vulkan instance: layer not present in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  case VK_ERROR_EXTENSION_NOT_PRESENT:
-    fprintf(stderr, "Error creating Vulkan instance: extension not present in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  case VK_ERROR_INCOMPATIBLE_DRIVER:
-    fprintf(stderr, "Error creating Vulkan instance: incompatible driver in %s %d\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-    break;
-  default:
-    fprintf(stderr, "Error creating Vulkan instance: unknown error in %s (line %d)\n", __FILE__, __LINE__);
-    exit(EXIT_FAILURE);
-  };
+  dbgPrint("Vulkan instance created!\n");
 }
