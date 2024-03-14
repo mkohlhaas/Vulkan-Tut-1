@@ -1,9 +1,5 @@
 # Vulkan Tutorial
 
-## Window
-
-### Commands
-
 - Add [GLFW](https://www.glfw.org/) as a submodule:
 
 ```shell
@@ -20,17 +16,14 @@ git config --list --local                            # check settings
   - [Vulkan guide](https://www.glfw.org/docs/3.3/vulkan_guide.html)
   - [Putting it together](https://www.glfw.org/docs/3.3/quick_guide.html#quick_example)
   - [Example code](https://www.glfw.org/documentation.html)
-- [Vulkan Dot File](https://github.com/mkohlhaas/Graphviz-Tutorial/blob/main/vulkan.svg)
-
-### Key Functions
-- glfwCreateWindow
-
-## Instance
-
-### Meaning
-
-Open stateful Vulkan library.
-
-### Key Functions
-
-- vkCreateInstance
+  - [Window size & resize](https://www.glfw.org/docs/3.3/window_guide.html#window_size)
+- [Vulkan SVG File](https://github.com/mkohlhaas/Graphviz-Tutorial/blob/main/vulkan.svg)
+- YT [Vulkan Lecture Series](https://www.youtube.com/watch?v=tLwbj9qys18&list=PLmIqTlJ6KsE1Jx5HV4sd2jOe3V1KMHHgn)
+  - Vulkan Essentials             (First Steps as Vulkan Developer)
+  - Swap Chain                    (Presentation Modes and Swap Chain Setup in Vulkan)
+  - Resources & Descriptors       (Use Buffers and Images in Vulkan Shaders)
+  - Commands and Command Buffers  (Submit Work to a Device⧸GPU)
+  - Pipelines and Stages          (Inside Graphics, Compute, Ray Tracing Pipes)
+  - Real-Time Ray Tracing         (RTX ON in Vulkan)
+  - Vulkan Synchronization        (Understand Fences, Semaphores, Barriers,…)
+- Renderpass → YT Video: [Deferred Shading](https://www.youtube.com/watch?v=6Qnv7jssdYc)

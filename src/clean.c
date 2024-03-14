@@ -1,6 +1,7 @@
 #include "device.h"
 #include "instance.h"
 #include "surface.h"
+#include "swapchain.h"
 #include <vulkan/vulkan_core.h>
 
 #ifndef NDEBUG
@@ -24,6 +25,7 @@ void cleanupVulkan() {
   // destroy device related objects //
   ////////////////////////////////////
 
+  vkDestroySwapchainKHR(device, swapchain, nullptr);
   vkDestroyDevice(device, nullptr);
 
   //////////////////////////////////////

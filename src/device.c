@@ -16,10 +16,14 @@ void createDevice() {
       .pQueuePriorities = &queuePriorities,
   };
 
+  const char *const enabledExtensionNames = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
+
   VkDeviceCreateInfo createInfo = {
       .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
       .queueCreateInfoCount = 1,
       .pQueueCreateInfos = &deviceQueueCreateInfo,
+      .enabledExtensionCount = 1,
+      .ppEnabledExtensionNames = &enabledExtensionNames,
   };
   EH(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
 
