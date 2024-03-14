@@ -111,6 +111,7 @@ void initVulkan() {
   VkApplicationInfo applicationInfo = {
       .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
       .apiVersion = VK_API_VERSION_1_3,
+      .pApplicationName = "Vulkan Tutorial",
   };
 
 #ifndef NDEBUG
