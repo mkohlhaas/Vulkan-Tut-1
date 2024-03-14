@@ -1,4 +1,7 @@
+#include "device.h"
 #include "instance.h"
+#include "surface.h"
+#include <vulkan/vulkan_core.h>
 
 #ifndef NDEBUG
 #include <GLFW/glfw3.h>
@@ -16,8 +19,20 @@ void destroyDebugMessenger() {
 #endif
 
 void cleanupVulkan() {
+
+  ////////////////////////////////////
+  // destroy device related objects //
+  ////////////////////////////////////
+
+  vkDestroyDevice(device, nullptr);
+
+  //////////////////////////////////////
+  // destroy instance related objects //
+  //////////////////////////////////////
+
+  vkDestroySurfaceKHR(instance, surface, nullptr);
 #ifndef NDEBUG
-  destroyDebugMessenger();
+  destroyDebugMessenger(); // just before destroying the instance itself
 #endif
   vkDestroyInstance(instance, nullptr);
 }

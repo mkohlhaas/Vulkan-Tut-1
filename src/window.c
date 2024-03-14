@@ -5,7 +5,7 @@
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
-static GLFWwindow *window;
+GLFWwindow *window;
 
 static void error_callback(int error, const char *description) { fprintf(stderr, "GLFW Error: %s\n", description); }
 
@@ -15,6 +15,7 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+// Sets `window` variable.
 void initGlfw() {
   glfwSetErrorCallback(error_callback);
 

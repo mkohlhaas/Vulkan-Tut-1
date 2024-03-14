@@ -3,10 +3,10 @@
 #include <vulkan/vulkan.h>
 
 VkDevice device = VK_NULL_HANDLE;
-VkQueue graphicsQueue = VK_NULL_HANDLE;
+VkQueue queue = VK_NULL_HANDLE;
 
 // Creates a logical device.
-// Sets `device` and `graphicsQueue` variables.
+// Sets `device` and `queue` variables.
 void createDevice() {
   float queuePriorities = 1.0f;
   VkDeviceQueueCreateInfo deviceQueueCreateInfo = {
@@ -23,5 +23,5 @@ void createDevice() {
   };
   EH(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
 
-  vkGetDeviceQueue(device, queueFamilyIndex, 0, &graphicsQueue);
+  vkGetDeviceQueue(device, queueFamilyIndex, 0, &queue);
 }

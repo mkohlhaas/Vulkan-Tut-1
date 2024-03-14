@@ -1,6 +1,6 @@
 #include <vulkan/vulkan.h>
 
 extern VkDevice device;
-extern VkQueue graphicsQueue;
+extern VkQueue queue;
 
 void createDevice();

@@ -1,6 +1,6 @@
 # Vulkan Tutorial
 
-## 1. Window
+## Window
 
 ### Commands
 
@@ -25,7 +25,7 @@ git config --list --local                            # check settings
 ### Key Functions
 - glfwCreateWindow
 
-## 2. Create Instance
+## Instance
 
 ### Meaning
 
