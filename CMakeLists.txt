@@ -6,7 +6,16 @@ find_package(Vulkan REQUIRED)
 
 add_subdirectory(glfw)
 
-add_executable(${PROJECT_NAME} src/main.c src/window.c src/instance.c src/clean.c src/error.c src/physical.c src/device.c src/surface.c src/swapchain.c)
+add_executable(${PROJECT_NAME} src/main.c
+                               src/window.c
+                               src/instance.c
+                               src/clean.c
+                               src/error.c
+                               src/physical.c
+                               src/device.c
+                               src/surface.c
+                               src/swapchain.c
+                               src/pipeline.c)
 target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)
