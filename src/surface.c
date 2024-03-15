@@ -6,4 +6,4 @@
 
 VkSurfaceKHR surface;
 
-void createSurface() { EH(glfwCreateWindowSurface(instance, window, NULL, &surface)); }
+void createSurface() { EH(glfwCreateWindowSurface(instance, window, nullptr, &surface)); }

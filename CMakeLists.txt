@@ -22,7 +22,9 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/device.c
                                src/surface.c
                                src/swapchain.c
-                               src/pipeline.c)
+                               src/pipeline.c
+                               src/renderpass.c)
+
 target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)

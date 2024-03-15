@@ -2,10 +2,11 @@
 #include "device.h"
 #include "instance.h"
 #include "physical.h"
+#include "pipeline.h"
+#include "renderpass.h"
 #include "surface.h"
 #include "swapchain.h"
 #include "window.h"
-#include "pipeline.h"
 
 int main(void) {
   initGlfw();
@@ -16,6 +17,7 @@ int main(void) {
 #endif
   pickPhysicalDevice();
   createDevice();
+  createRenderPass();
   createPipeline();
   createSwapchain();
   createSwapchainImageViews();

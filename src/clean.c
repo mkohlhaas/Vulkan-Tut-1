@@ -1,6 +1,7 @@
 #include "device.h"
 #include "instance.h"
 #include "pipeline.h"
+#include "renderpass.h"
 #include "surface.h"
 #include "swapchain.h"
 #include <vulkan/vulkan_core.h>

@@ -19,8 +19,9 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
 void initGlfw() {
   glfwSetErrorCallback(error_callback);
 
-  if (!glfwInit())
+  if (!glfwInit()) {
     exit(EXIT_FAILURE);
+  }
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
