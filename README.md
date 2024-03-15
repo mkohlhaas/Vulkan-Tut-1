@@ -29,3 +29,4 @@ git config --list --local                            # check settings
 - Renderpass → YT Video: [Deferred Shading](https://www.youtube.com/watch?v=6Qnv7jssdYc)
 - [Graphics Pipeline](https://vulkan-tutorial.com/images/vulkan_simplified_pipeline.svg)
 - [GLSL docs](https://docs.gl/#)
+- [Normalized Device Coordinates in Vulkan](NDC)(https://vulkan-tutorial.com/images/normalized_device_coordinates.svg)

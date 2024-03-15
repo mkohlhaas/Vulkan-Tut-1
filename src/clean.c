@@ -1,5 +1,6 @@
 #include "device.h"
 #include "instance.h"
+#include "pipeline.h"
 #include "surface.h"
 #include "swapchain.h"
 #include <vulkan/vulkan_core.h>
@@ -20,6 +21,9 @@ void destroyDebugMessenger() {
 #endif
 
 void cleanupVulkan() {
+  vkDestroyRenderPass(device, renderPass, nullptr);
+  vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
+  vkDestroyPipeline(device, pipeline, nullptr);
 
   ////////////////////////////////////
   // destroy device related objects //

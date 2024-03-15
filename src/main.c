@@ -5,6 +5,7 @@
 #include "surface.h"
 #include "swapchain.h"
 #include "window.h"
+#include "pipeline.h"
 
 int main(void) {
   initGlfw();
@@ -15,6 +16,7 @@ int main(void) {
 #endif
   pickPhysicalDevice();
   createDevice();
+  createPipeline();
   createSwapchain();
   createSwapchainImageViews();
   mainLoop();
