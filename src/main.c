@@ -16,6 +16,7 @@ int main(void) {
   pickPhysicalDevice();
   createDevice();
   createSwapchain();
+  createSwapchainImageViews();
   mainLoop();
   cleanupVulkan();
 }

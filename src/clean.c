@@ -25,6 +25,9 @@ void cleanupVulkan() {
   // destroy device related objects //
   ////////////////////////////////////
 
+  for (int i = 0; i < swapchainImageCount; i++) {
+    vkDestroyImageView(device, swapchainImageViews[i], nullptr);
+  }
   vkDestroySwapchainKHR(device, swapchain, nullptr);
   vkDestroyDevice(device, nullptr);
 
