@@ -2,8 +2,8 @@
 
 #include <vulkan/vulkan.h>
 
-extern VkCommandPool commandPool;
-extern VkCommandBuffer commandBuffer;
+extern VkCommandPool cmdPool;
+extern VkCommandBuffer cmdBuffer;
 
 void createCommandPool();
 void allocateCommandBuffer();

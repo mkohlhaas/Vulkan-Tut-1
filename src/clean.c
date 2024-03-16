@@ -24,7 +24,7 @@ void destroyDebugMessenger() {
 #endif
 
 void cleanupVulkan() {
-  vkDestroyCommandPool(device, commandPool, nullptr);
+  vkDestroyCommandPool(device, cmdPool, nullptr);
   for (int i = 0; i < swapchainImageCount; i++) {
     vkDestroyFramebuffer(device, swapchainFramebuffers[i], nullptr);
   }

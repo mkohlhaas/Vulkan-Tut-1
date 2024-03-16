@@ -4,8 +4,8 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-VkCommandPool commandPool;
-VkCommandBuffer commandBuffer;
+VkCommandPool cmdPool;
+VkCommandBuffer cmdBuffer;
 
 void createCommandPool() {
   VkCommandPoolCreateInfo createInfo = {
@@ -14,17 +14,17 @@ void createCommandPool() {
       .queueFamilyIndex = queueFamilyIndex,
   };
 
-  EH(vkCreateCommandPool(device, &createInfo, nullptr, &commandPool));
+  EH(vkCreateCommandPool(device, &createInfo, nullptr, &cmdPool));
 }
 
 void allocateCommandBuffer() {
 
   VkCommandBufferAllocateInfo allocateInfo = {
       .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-      .commandPool = commandPool,
+      .commandPool = cmdPool,
       .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
       .commandBufferCount = 1,
   };
 
-  EH(vkAllocateCommandBuffers(device, &allocateInfo, &commandBuffer));
+  EH(vkAllocateCommandBuffers(device, &allocateInfo, &cmdBuffer));
 }
