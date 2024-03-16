@@ -25,7 +25,8 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/pipeline.c
                                src/renderpass.c
                                src/framebuffer.c
-                               src/cmdPool.c)
+                               src/cmdPool.c
+                               src/recording.c)
 
 target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
