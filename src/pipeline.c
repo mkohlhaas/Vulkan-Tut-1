@@ -1,7 +1,6 @@
 #include "device.h"
 #include "error.h"
 #include "renderpass.h"
-#include "swapchain.h"
 #include <glib.h>
 #include <stdlib.h>
 #include <vulkan/vulkan.h>

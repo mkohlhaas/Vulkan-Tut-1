@@ -1,4 +1,6 @@
+#include "cmdPool.h"
 #include "device.h"
+#include "framebuffer.h"
 #include "instance.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -22,6 +24,10 @@ void destroyDebugMessenger() {
 #endif
 
 void cleanupVulkan() {
+  vkDestroyCommandPool(device, commandPool, nullptr);
+  for (int i = 0; i < swapchainImageCount; i++) {
+    vkDestroyFramebuffer(device, swapchainFramebuffers[i], nullptr);
+  }
   vkDestroyRenderPass(device, renderPass, nullptr);
   vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
   vkDestroyPipeline(device, pipeline, nullptr);

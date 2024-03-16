@@ -1,5 +1,7 @@
 #include "clean.h"
+#include "cmdPool.h"
 #include "device.h"
+#include "framebuffer.h"
 #include "instance.h"
 #include "physical.h"
 #include "pipeline.h"
@@ -21,6 +23,9 @@ int main(void) {
   createPipeline();
   createSwapchain();
   createSwapchainImageViews();
+  createFramebuffers();
+  createCommandPool();
+  allocateCommandBuffer();
   mainLoop();
   cleanupVulkan();
 }
