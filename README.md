@@ -30,3 +30,10 @@ git config --list --local                            # check settings
 - [Graphics Pipeline](https://vulkan-tutorial.com/images/vulkan_simplified_pipeline.svg)
 - [GLSL docs](https://docs.gl/#)
 - [Normalized Device Coordinates in Vulkan(NDC)](https://vulkan-tutorial.com/images/normalized_device_coordinates.svg)
+- Semaphores on the *GPU*
+  - Semaphores are used both to order work inside the same queue and between different queues.
+  - Two kinds of semaphores in Vulkan, `binary` and `timeline`.
+  - Semaphores are used to specify the execution order of operations on the GPU
+- Fences
+  - A fence is for ordering the execution on the *CPU*. If the host needs to know when the GPU has finished something, we use a fence.
+  - Fences are used to keep the CPU and GPU in sync with each-other.
