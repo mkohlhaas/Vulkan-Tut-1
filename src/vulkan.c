@@ -7,6 +7,7 @@
 #include "renderpass.h"
 #include "surface.h"
 #include "swapchain.h"
+#include "sync.h"
 
 void initVulkan() {
   createInstance();
@@ -21,4 +22,5 @@ void initVulkan() {
   createSwapchain();
   createFramebuffers();
   createCmdBuffer();
+  createSyncObjects();
 }

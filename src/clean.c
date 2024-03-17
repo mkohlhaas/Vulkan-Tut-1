@@ -1,12 +1,13 @@
 #include "cmdPool.h"
 #include "device.h"
+#include "framebuffer.h"
 #include "instance.h"
 #include "pipeline.h"
 #include "renderpass.h"
-#include "swapchain.h"
-#include <vulkan/vulkan_core.h>
-#include "framebuffer.h"
 #include "surface.h"
+#include "swapchain.h"
+#include "sync.h"
+#include <vulkan/vulkan_core.h>
 
 void cleanVulkan() {
   // device related objects
@@ -15,6 +16,7 @@ void cleanVulkan() {
   cleanRenderPass();
   cleanPipeline();
   cleanSwapchain();
+  cleanSyncObjects();
   cleanDevice();
 
   // instance related objects
