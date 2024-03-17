@@ -8,17 +8,17 @@
 VkFramebuffer *framebuffers;
 
 void createFramebuffers() {
-  framebuffers = malloc(sizeof(VkFramebuffer) * getSwapchainImageCount());
+  framebuffers = malloc(sizeof(VkFramebuffer) * swapchainImagesCount);
 
   // TODO: is loop really necessary or can we just set attachmentCount ?
-  for (int i = 0; i < getSwapchainImageCount(); i++) {
+  for (int i = 0; i < swapchainImagesCount; i++) {
     VkFramebufferCreateInfo framebufferCreateInfo = {
         .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
         .renderPass = renderPass,
         .attachmentCount = 1,
-        .pAttachments = getSwapchainImageViews(),
-        .width = getSwapchainExtent().width,
-        .height = getSwapchainExtent().height,
+        .pAttachments = &swapchainImageViews[i],
+        .width = swapchainExtent.width,
+        .height = swapchainExtent.height,
         .layers = 1,
     };
 
@@ -27,7 +27,7 @@ void createFramebuffers() {
 }
 
 void cleanFramebuffers() {
-  for (int i = 0; i < getSwapchainImageCount(); i++) {
+  for (int i = 0; i < swapchainImagesCount; i++) {
     vkDestroyFramebuffer(device, framebuffers[i], nullptr);
   }
 }

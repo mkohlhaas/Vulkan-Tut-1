@@ -26,14 +26,16 @@ git config --list --local                            # check settings
   - Pipelines and Stages          (Inside Graphics, Compute, Ray Tracing Pipes)
   - Real-Time Ray Tracing         (RTX ON in Vulkan)
   - Vulkan Synchronization        (Understand Fences, Semaphores, Barriers,…)
-- Renderpass → YT Video: [Deferred Shading](https://www.youtube.com/watch?v=6Qnv7jssdYc)
+- Renderpass YT Videos
+  - [Render Passes in Vulkan](https://www.youtube.com/watch?v=x2SGVjlVGhE)
+  - [Deferred Shading](https://www.youtube.com/watch?v=6Qnv7jssdYc)
 - [Graphics Pipeline](https://vulkan-tutorial.com/images/vulkan_simplified_pipeline.svg)
 - [GLSL docs](https://docs.gl/#)
 - [Normalized Device Coordinates in Vulkan(NDC)](https://vulkan-tutorial.com/images/normalized_device_coordinates.svg)
-- Semaphores on the *GPU*
+- Semaphores (*GPU*)
   - Semaphores are used both to order work inside the same queue and between different queues.
   - Two kinds of semaphores in Vulkan, `binary` and `timeline`.
   - Semaphores are used to specify the execution order of operations on the GPU
-- Fences
+- Fences (*CPU*, *GPU*)
   - A fence is for ordering the execution on the *CPU*. If the host needs to know when the GPU has finished something, we use a fence.
   - Fences are used to keep the CPU and GPU in sync with each-other.

@@ -80,73 +80,73 @@ static void _handleError(const char *fileName, int lineNumber) {
       fprintf(stderr, "Vulkan Error: pipeline compile required");
       break;
     case VK_ERROR_SURFACE_LOST_KHR:
-      fprintf(stderr, "Vulkan Error: surface lost khr");
+      fprintf(stderr, "Vulkan Error: surface lost");
       break;
     case VK_ERROR_NATIVE_WINDOW_IN_USE_KHR:
-      fprintf(stderr, "Vulkan Error: native window in use khr");
+      fprintf(stderr, "Vulkan Error: native window in use");
       break;
     case VK_SUBOPTIMAL_KHR:
-      fprintf(stderr, "Vulkan Error: suboptimal khr");
+      fprintf(stderr, "Vulkan Error: suboptimal");
       break;
     case VK_ERROR_OUT_OF_DATE_KHR:
-      fprintf(stderr, "Vulkan Error: out of date khr");
+      fprintf(stderr, "Vulkan Error: out of date");
       break;
     case VK_ERROR_INCOMPATIBLE_DISPLAY_KHR:
-      fprintf(stderr, "Vulkan Error: incompatible display khr");
+      fprintf(stderr, "Vulkan Error: incompatible display");
       break;
     case VK_ERROR_VALIDATION_FAILED_EXT:
-      fprintf(stderr, "Vulkan Error: validation failed ext");
+      fprintf(stderr, "Vulkan Error: validation failed");
       break;
     case VK_ERROR_INVALID_SHADER_NV:
-      fprintf(stderr, "Vulkan Error: invalid shader nv");
+      fprintf(stderr, "Vulkan Error: invalid shader");
       break;
     case VK_ERROR_IMAGE_USAGE_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: image usage not supported khr");
+      fprintf(stderr, "Vulkan Error: image usage not supported");
       break;
     case VK_ERROR_VIDEO_PICTURE_LAYOUT_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: video picture layout not supported khr");
+      fprintf(stderr, "Vulkan Error: video picture layout not supported");
       break;
     case VK_ERROR_VIDEO_PROFILE_OPERATION_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: video profile operation not supported khr");
+      fprintf(stderr, "Vulkan Error: video profile operation not supported");
       break;
     case VK_ERROR_VIDEO_PROFILE_FORMAT_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: video profile format not supported khr");
+      fprintf(stderr, "Vulkan Error: video profile format not supported");
       break;
     case VK_ERROR_VIDEO_PROFILE_CODEC_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: video profile codec not supported khr");
+      fprintf(stderr, "Vulkan Error: video profile codec not supported");
       break;
     case VK_ERROR_VIDEO_STD_VERSION_NOT_SUPPORTED_KHR:
-      fprintf(stderr, "Vulkan Error: video std version not supported khr");
+      fprintf(stderr, "Vulkan Error: video std version not supported");
       break;
     case VK_ERROR_INVALID_DRM_FORMAT_MODIFIER_PLANE_LAYOUT_EXT:
-      fprintf(stderr, "Vulkan Error: invalid drm format modifier plane layout ext");
+      fprintf(stderr, "Vulkan Error: invalid drm format modifier plane layout");
       break;
     case VK_ERROR_NOT_PERMITTED_KHR:
-      fprintf(stderr, "Vulkan Error: not permitted khr");
+      fprintf(stderr, "Vulkan Error: not permitted");
       break;
     case VK_ERROR_FULL_SCREEN_EXCLUSIVE_MODE_LOST_EXT:
-      fprintf(stderr, "Vulkan Error: full screen exclusive mode lost ext");
+      fprintf(stderr, "Vulkan Error: full screen exclusive mode lost");
       break;
     case VK_THREAD_IDLE_KHR:
-      fprintf(stderr, "Vulkan Error: thread idle khr");
+      fprintf(stderr, "Vulkan Error: thread idle");
       break;
     case VK_THREAD_DONE_KHR:
-      fprintf(stderr, "Vulkan Error: thread done khr");
+      fprintf(stderr, "Vulkan Error: thread done");
       break;
     case VK_OPERATION_DEFERRED_KHR:
-      fprintf(stderr, "Vulkan Error: operation deferred khr");
+      fprintf(stderr, "Vulkan Error: operation deferred");
       break;
     case VK_OPERATION_NOT_DEFERRED_KHR:
-      fprintf(stderr, "Vulkan Error: operation not deferred khr");
+      fprintf(stderr, "Vulkan Error: operation not deferred");
       break;
     case VK_ERROR_INVALID_VIDEO_STD_PARAMETERS_KHR:
-      fprintf(stderr, "Vulkan Error: invalid video std parameters khr");
+      fprintf(stderr, "Vulkan Error: invalid video std parameters");
       break;
     case VK_ERROR_COMPRESSION_EXHAUSTED_EXT:
-      fprintf(stderr, "Vulkan Error: compression exhausted ext");
+      fprintf(stderr, "Vulkan Error: compression exhausted");
       break;
     case VK_ERROR_INCOMPATIBLE_SHADER_BINARY_EXT:
-      fprintf(stderr, "Vulkan Error: incompatible shader binary ext");
+      fprintf(stderr, "Vulkan Error: incompatible shader binary");
       break;
     case VK_RESULT_MAX_ENUM:
       fprintf(stderr, "Vulkan Error: result max enum");

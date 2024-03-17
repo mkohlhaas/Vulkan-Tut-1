@@ -11,27 +11,19 @@
 VkSwapchainKHR swapchain;
 VkFormat swapchainImageFormat = VK_FORMAT_B8G8R8A8_SRGB;
 VkExtent2D swapchainExtent;
-uint32_t swapchainImageCount;
+uint32_t swapchainImagesCount;
 VkImage *swapchainImages;
 VkImageView *swapchainImageViews;
-
-VkFormat getSwapchainImageFormat() { return swapchainImageFormat; }
-
-VkExtent2D getSwapchainExtent() { return swapchainExtent; }
-
-uint32_t getSwapchainImageCount() { return swapchainImageCount; }
-
-VkImageView *getSwapchainImageViews() { return swapchainImageViews; }
 
 void createSwapchainImageViews() {
   VkImageView view;
 
-  swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImageCount);
+  swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImagesCount);
   if (!swapchainImageViews) {
     logExit("Not enough memory");
   }
 
-  for (int i = 0; i < swapchainImageCount; i++) {
+  for (int i = 0; i < swapchainImagesCount; i++) {
     const VkImageViewCreateInfo createInfo = {
         .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         .image = swapchainImages[i],
@@ -72,17 +64,17 @@ void createSwapchain() {
   EH(vkCreateSwapchainKHR(device, &swapchainCreateInfoKHR, nullptr, &swapchain));
 
   // get swapchain images
-  vkGetSwapchainImagesKHR(device, swapchain, &swapchainImageCount, nullptr);
-  swapchainImages = malloc(sizeof(VkImage) * swapchainImageCount);
+  vkGetSwapchainImagesKHR(device, swapchain, &swapchainImagesCount, nullptr);
+  swapchainImages = malloc(sizeof(VkImage) * swapchainImagesCount);
   if (!swapchainImages) {
     logExit("Not enough memory");
   }
-  EH(vkGetSwapchainImagesKHR(device, swapchain, &swapchainImageCount, swapchainImages));
+  EH(vkGetSwapchainImagesKHR(device, swapchain, &swapchainImagesCount, swapchainImages));
   createSwapchainImageViews();
 }
 
 void cleanSwapchain() {
-  for (int i = 0; i < swapchainImageCount; i++) {
+  for (int i = 0; i < swapchainImagesCount; i++) {
     vkDestroyImageView(device, swapchainImageViews[i], nullptr);
   }
   vkDestroySwapchainKHR(device, swapchain, nullptr);

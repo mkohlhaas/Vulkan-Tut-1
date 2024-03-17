@@ -1,4 +1,4 @@
-#include "cmdPool.h"
+#include "cmdBuffer.h"
 #include "error.h"
 #include "framebuffer.h"
 #include "pipeline.h"
@@ -16,17 +16,17 @@ static void beginCmdBuffer() {
   EH(vkBeginCommandBuffer(cmdBuffer, &commandBufferBeginInfo));
 }
 
-static void beginRenderPass(uint32_t imageIndex) {
+static void beginRenderPass(image_index_t imageIndex) {
   // renderPass → colorAttachmentDescription → loadOp
-  const VkClearColorValue colorClearValue = {0.0f, 0.0f, 0.0f, 1.0f}; // black
+  const VkClearColorValue colorClearValue = {0.03f, 0.03f, 0.03f, 1.0f};
   const VkClearValue clearValues[] = {colorClearValue};
 
   VkRenderPassBeginInfo renderPassBeginInfo = {
       .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
       .renderPass = renderPass,
       .framebuffer = framebuffers[imageIndex],
-      .renderArea = {{0, 0}, getSwapchainExtent()},
-      .clearValueCount = sizeof(clearValues) / sizeof(VkClearColorValue),
+      .renderArea = {{0, 0}, swapchainExtent},
+      .clearValueCount = sizeof(clearValues) / sizeof(VkClearValue),
       .pClearValues = clearValues,
   };
   vkCmdBeginRenderPass(cmdBuffer, &renderPassBeginInfo, VK_SUBPASS_CONTENTS_INLINE);
@@ -36,12 +36,12 @@ static void bindPipeline() { vkCmdBindPipeline(cmdBuffer, VK_PIPELINE_BIND_POINT
 
 // Dynamic States in pipeline
 static void setViewport() {
-  VkViewport viewport = {0.0f, 0.0f, getSwapchainExtent().width, getSwapchainExtent().height, 0.0f, 1.0f};
+  VkViewport viewport = {0.0f, 0.0f, swapchainExtent.width, swapchainExtent.height, 0.0f, 1.0f};
   vkCmdSetViewport(cmdBuffer, 0, 1, &viewport);
 }
 
 static void setScissor() {
-  VkRect2D scissor = {{0.0f, 0.0f}, getSwapchainExtent()};
+  VkRect2D scissor = {{0.0f, 0.0f}, swapchainExtent};
   vkCmdSetScissor(cmdBuffer, 0, 1, &scissor);
 }
 
@@ -51,7 +51,7 @@ static void endRenderPass() { vkCmdEndRenderPass(cmdBuffer); }
 
 static void endCmdBuffer() { EH(vkEndCommandBuffer(cmdBuffer)); }
 
-void recordCmdBuffer(VkCommandBuffer commandBuffer, image_index imageIndex) {
+void recordCmdBuffer(image_index_t imageIndex) {
   beginCmdBuffer();
   beginRenderPass(imageIndex);
   bindPipeline();

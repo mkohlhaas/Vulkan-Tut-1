@@ -1,3 +1,5 @@
+#include "device.h"
+#include "draw.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,5 +42,7 @@ void cleanGlfw() {
 void mainLoop() {
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
+    drawFrame();
   }
+  deviceWaitIdle();
 }

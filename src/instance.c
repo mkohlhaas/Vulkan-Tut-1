@@ -112,6 +112,9 @@ void createInstance() {
       .sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
       .apiVersion = VK_API_VERSION_1_3,
       .pApplicationName = "Vulkan Tutorial",
+      .applicationVersion = VK_MAKE_VERSION(1, 0, 0),
+      .pEngineName = "No Engine",
+      .engineVersion = VK_MAKE_VERSION(1, 0, 0),
   };
 
 #ifndef NDEBUG
@@ -123,7 +126,7 @@ void createInstance() {
     .enabledExtensionCount = glfwExtensionCount + 1,
     .ppEnabledExtensionNames = requiredExtensions,
     .pApplicationInfo = &applicationInfo,
-    .pNext = &debugUtilsMessengerCreateInfoEXT, // debug messages only during Vulkan startup and shutdown
+    .pNext = &debugUtilsMessengerCreateInfoEXT, // debug messages during Vulkan startup and shutdown
     .enabledLayerCount = sizeof(requiredValidationLayers) / sizeof(char *),
     .ppEnabledLayerNames = requiredValidationLayers,
 #else

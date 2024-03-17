@@ -1,3 +1,5 @@
+#pragma once
+
 #include "clean.h"
 #include "vulkan.h"
 #include "window.h"

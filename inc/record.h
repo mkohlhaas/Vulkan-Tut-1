@@ -4,4 +4,4 @@
 #include "types.h"
 
 // Records commands into the command buffer.
-void recordCmdBuffer(VkCommandBuffer, image_index);
+void recordCmdBuffer(image_index_t);
