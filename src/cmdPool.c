@@ -7,15 +7,6 @@
 VkCommandPool cmdPool;
 VkCommandBuffer cmdBuffer;
 
-void createCommandPool() {
-  VkCommandPoolCreateInfo createInfo = {
-      .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-      .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
-      .queueFamilyIndex = queueFamilyIndex,
-  };
-  EH(vkCreateCommandPool(device, &createInfo, nullptr, &cmdPool));
-}
-
 void allocateCommandBuffer() {
   VkCommandBufferAllocateInfo allocateInfo = {
       .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
@@ -26,6 +17,14 @@ void allocateCommandBuffer() {
   EH(vkAllocateCommandBuffers(device, &allocateInfo, &cmdBuffer));
 }
 
-void cleanCmdPool() {
-  vkDestroyCommandPool(device, cmdPool, nullptr);
+void createCmdBuffer() {
+  VkCommandPoolCreateInfo createInfo = {
+      .sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+      .flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+      .queueFamilyIndex = getQueueFamilyIndex(),
+  };
+  EH(vkCreateCommandPool(device, &createInfo, nullptr, &cmdPool));
+  allocateCommandBuffer();
 }
+
+void cleanCmdBuffer() { vkDestroyCommandPool(device, cmdPool, nullptr); }

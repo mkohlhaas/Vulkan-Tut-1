@@ -23,14 +23,12 @@ static VkShaderModule createShaderModule(char *fileName) {
   gchar *shaderCode;
   gsize lenShaderCode;
   if (!readFile(fileName, &shaderCode, &lenShaderCode)) {
-    log("SPIR-v file %s not found", fileName);
-    exit(EXIT_FAILURE);
+    logExit("SPIR-v file %s not found", fileName);
   }
 
   dbgPrint("Code size %s: %lu\n", fileName, lenShaderCode);
   if (lenShaderCode % 4) {
-    log("Shader code %s has incorrect size", fileName);
-    exit(EXIT_FAILURE);
+    logExit("Shader code %s has incorrect size", fileName);
   }
 
   VkShaderModuleCreateInfo createInfo = {
@@ -44,7 +42,6 @@ static VkShaderModule createShaderModule(char *fileName) {
 }
 
 void createPipeline() {
-
   // Shader Stages
   VkShaderModule vertShaderModule = createShaderModule(vertexShaderFilename);
   VkShaderModule fragShaderModule = createShaderModule(fragmentShaderFilename);

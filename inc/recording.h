@@ -1,5 +1,7 @@
 #pragma once
 
 #include <vulkan/vulkan.h>
+#include "types.h"
 
-void recordCmdBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+// Records commands into the command buffer.
+void recordCmdBuffer(VkCommandBuffer, image_index);

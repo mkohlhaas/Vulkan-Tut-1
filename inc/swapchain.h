@@ -2,11 +2,22 @@
 
 #include <vulkan/vulkan.h>
 
-extern VkFormat swapchainImageFormat;
-extern VkExtent2D swapchainExtent;
-extern uint32_t swapchainImageCount;
-extern VkImageView *swapchainImageViews;
+extern VkSwapchainKHR swapchain;
 
+// Sets `swapchain`, `swapchainImageFormat`, `swapchainExtent`, `swapchainImageCount`, `swapchainImageViews` variables.
 void createSwapchain();
-void createSwapchainImageViews();
+
+// Gets swapchain image format.
+VkFormat getSwapchainImageFormat();
+
+// Gets swapchain extent.
+VkExtent2D getSwapchainExtent();
+
+// Gets swapchain image count.
+uint32_t getSwapchainImageCount();
+
+// Gets swapchain image views.
+VkImageView *getSwapchainImageViews();
+
+// Destroys swapchain and its image views.
 void cleanSwapchain();

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vulkan/vulkan_core.h>
 #include <stdio.h>
+#include <vulkan/vulkan_core.h>
 
 extern VkResult err;
 
@@ -26,3 +26,7 @@ void handleError();
 #endif
 
 #define log(fmt, ...) fprintf(stderr, fmt " in file %s (line %d)\n", ##__VA_ARGS__, __FILE__, __LINE__);
+
+#define logExit(fmt, ...)                                                                                              \
+  fprintf(stderr, fmt " in file %s (line %d)\n", ##__VA_ARGS__, __FILE__, __LINE__);                                   \
+  exit(EXIT_FAILURE);

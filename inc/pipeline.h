@@ -3,8 +3,9 @@
 #include <vulkan/vulkan_core.h>
 
 extern VkPipeline pipeline;
-// extern VkPipelineLayout pipelineLayout;
-// extern VkDescriptorSetLayout descriptorSetLayout;
 
+// Creates graphics pipeline.
 void createPipeline();
+
+// Destroys graphics pipeline.
 void cleanPipeline();

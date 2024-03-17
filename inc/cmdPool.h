@@ -4,6 +4,8 @@
 
 extern VkCommandBuffer cmdBuffer;
 
-void createCommandPool();
-void allocateCommandBuffer();
-void cleanCmdPool();
+// Creates a command buffer.
+void createCmdBuffer();
+
+// Destroys command buffer.
+void cleanCmdBuffer();

@@ -5,13 +5,11 @@
 VkDevice device = VK_NULL_HANDLE;
 VkQueue queue = VK_NULL_HANDLE;
 
-// Creates a logical device.
-// Sets `device` and `queue` variables.
 void createDevice() {
   float queuePriorities = 1.0f;
   VkDeviceQueueCreateInfo deviceQueueCreateInfo = {
       .sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-      .queueFamilyIndex = queueFamilyIndex,
+      .queueFamilyIndex = getQueueFamilyIndex(),
       .queueCount = 1,
       .pQueuePriorities = &queuePriorities,
   };
@@ -27,7 +25,9 @@ void createDevice() {
   };
   EH(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
 
-  vkGetDeviceQueue(device, queueFamilyIndex, 0, &queue);
+  vkGetDeviceQueue(device, getQueueFamilyIndex(), 0, &queue);
 }
+
+VkQueue getDeviceQueue() { return queue; }
 
 void cleanDevice() { vkDestroyDevice(device, nullptr); }

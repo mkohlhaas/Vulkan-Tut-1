@@ -8,7 +8,7 @@ VkRenderPass renderPass = VK_NULL_HANDLE;
 
 void createRenderPass() {
   VkAttachmentDescription colorAttachmentDescription = {
-      .format = swapchainImageFormat,
+      .format = getSwapchainImageFormat(),
       .samples = VK_SAMPLE_COUNT_1_BIT,
       .loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
       .initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,

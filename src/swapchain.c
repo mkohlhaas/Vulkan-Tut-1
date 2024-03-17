@@ -3,6 +3,7 @@
 #include "physical.h"
 #include "surface.h"
 #include <GLFW/glfw3.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -14,13 +15,41 @@ uint32_t swapchainImageCount;
 VkImage *swapchainImages;
 VkImageView *swapchainImageViews;
 
-// Sets `swapchain` variable and some more. (See header file.)
-void createSwapchain() {
+VkFormat getSwapchainImageFormat() { return swapchainImageFormat; }
 
+VkExtent2D getSwapchainExtent() { return swapchainExtent; }
+
+uint32_t getSwapchainImageCount() { return swapchainImageCount; }
+
+VkImageView *getSwapchainImageViews() { return swapchainImageViews; }
+
+void createSwapchainImageViews() {
+  VkImageView view;
+
+  swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImageCount);
+  if (!swapchainImageViews) {
+    logExit("Not enough memory");
+  }
+
+  for (int i = 0; i < swapchainImageCount; i++) {
+    const VkImageViewCreateInfo createInfo = {
+        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+        .image = swapchainImages[i],
+        .viewType = VK_IMAGE_VIEW_TYPE_2D,
+        .format = swapchainImageFormat,
+        .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1},
+    };
+    EH(vkCreateImageView(device, &createInfo, nullptr, &view));
+    swapchainImageViews[i] = view;
+  }
+}
+
+void createSwapchain() {
   VkSurfaceCapabilitiesKHR surfaceCapabilities;
   EH(vkGetPhysicalDeviceSurfaceCapabilitiesKHR(physicalDevice, surface, &surfaceCapabilities));
 
   swapchainExtent = surfaceCapabilities.currentExtent;
+  uint32_t queueFamilyIndex = getQueueFamilyIndex();
 
   VkSwapchainCreateInfoKHR swapchainCreateInfoKHR = {
       .sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
@@ -46,32 +75,10 @@ void createSwapchain() {
   vkGetSwapchainImagesKHR(device, swapchain, &swapchainImageCount, nullptr);
   swapchainImages = malloc(sizeof(VkImage) * swapchainImageCount);
   if (!swapchainImages) {
-    log("Not enough memory");
-    exit(EXIT_FAILURE);
+    logExit("Not enough memory");
   }
   EH(vkGetSwapchainImagesKHR(device, swapchain, &swapchainImageCount, swapchainImages));
-}
-
-void createSwapchainImageViews() {
-  VkImageView view;
-
-  swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImageCount);
-  if (!swapchainImageViews) {
-    log("Not enough memory");
-    exit(EXIT_FAILURE);
-  }
-
-  for (int i = 0; i < swapchainImageCount; i++) {
-    const VkImageViewCreateInfo createInfo = {
-        .sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-        .image = swapchainImages[i],
-        .viewType = VK_IMAGE_VIEW_TYPE_2D,
-        .format = swapchainImageFormat,
-        .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1},
-    };
-    EH(vkCreateImageView(device, &createInfo, nullptr, &view));
-    swapchainImageViews[i] = view;
-  }
+  createSwapchainImageViews();
 }
 
 void cleanSwapchain() {

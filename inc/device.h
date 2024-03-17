@@ -3,7 +3,12 @@
 #include <vulkan/vulkan.h>
 
 extern VkDevice device;
-extern VkQueue queue;
 
+// Creates a logical device.
 void createDevice();
+
+// Gets device queue.
+VkQueue getDeviceQueue();
+
+// Destroys logical device.
 void cleanDevice();

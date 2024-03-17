@@ -1,12 +1,21 @@
 #include "error.h"
 #include "instance.h"
 #include "surface.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vulkan/vulkan.h>
 
 VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-uint32_t queueFamilyIndex = -1;
+uint32_t queueFamilyIndex = UINT32_MAX;
+
+uint32_t getQueueFamilyIndex() {
+  if (queueFamilyIndex == UINT32_MAX) {
+    logExit("Queue family index not set!");
+    exit(EXIT_FAILURE);
+  }
+  return queueFamilyIndex;
+}
 
 void printPhysicalDevices() {
   uint32_t physicalDeviceCount;

@@ -19,8 +19,6 @@ void initVulkan() {
   createRenderPass();
   createPipeline();
   createSwapchain();
-  createSwapchainImageViews();
   createFramebuffers();
-  createCommandPool();
-  allocateCommandBuffer();
+  createCmdBuffer();
 }

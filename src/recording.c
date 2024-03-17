@@ -4,6 +4,7 @@
 #include "pipeline.h"
 #include "renderpass.h"
 #include "swapchain.h"
+#include "types.h"
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
@@ -23,8 +24,8 @@ static void beginRenderPass(uint32_t imageIndex) {
   VkRenderPassBeginInfo renderPassBeginInfo = {
       .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
       .renderPass = renderPass,
-      .framebuffer = swapchainFramebuffers[imageIndex],
-      .renderArea = {{0, 0}, swapchainExtent},
+      .framebuffer = framebuffers[imageIndex],
+      .renderArea = {{0, 0}, getSwapchainExtent()},
       .clearValueCount = sizeof(clearValues) / sizeof(VkClearColorValue),
       .pClearValues = clearValues,
   };
@@ -35,12 +36,12 @@ static void bindPipeline() { vkCmdBindPipeline(cmdBuffer, VK_PIPELINE_BIND_POINT
 
 // Dynamic States in pipeline
 static void setViewport() {
-  VkViewport viewport = {0.0f, 0.0f, swapchainExtent.width, swapchainExtent.height, 0.0f, 1.0f};
+  VkViewport viewport = {0.0f, 0.0f, getSwapchainExtent().width, getSwapchainExtent().height, 0.0f, 1.0f};
   vkCmdSetViewport(cmdBuffer, 0, 1, &viewport);
 }
 
 static void setScissor() {
-  VkRect2D scissor = {{0.0f, 0.0f}, swapchainExtent};
+  VkRect2D scissor = {{0.0f, 0.0f}, getSwapchainExtent()};
   vkCmdSetScissor(cmdBuffer, 0, 1, &scissor);
 }
 
@@ -50,7 +51,7 @@ static void endRenderPass() { vkCmdEndRenderPass(cmdBuffer); }
 
 static void endCmdBuffer() { EH(vkEndCommandBuffer(cmdBuffer)); }
 
-void recordCmdBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex) {
+void recordCmdBuffer(VkCommandBuffer commandBuffer, image_index imageIndex) {
   beginCmdBuffer();
   beginRenderPass(imageIndex);
   bindPipeline();

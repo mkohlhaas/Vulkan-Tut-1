@@ -10,7 +10,7 @@
 
 void cleanVulkan() {
   // device related objects
-  cleanCmdPool();
+  cleanCmdBuffer();
   cleanFramebuffers();
   cleanRenderPass();
   cleanPipeline();

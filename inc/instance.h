@@ -4,5 +4,8 @@
 
 extern VkInstance instance;
 
+// Opens Vulkan™ library.
 void createInstance();
+
+// Closes Vulkan™ library.
 void cleanInstance();
