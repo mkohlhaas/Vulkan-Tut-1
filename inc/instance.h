@@ -4,8 +4,5 @@
 
 extern VkInstance instance;
 
-#ifndef Ndebug
-extern VkDebugUtilsMessengerEXT debugMessenger;
-#endif
-
-void initVulkan();
+void createInstance();
+void cleanInstance();

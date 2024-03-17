@@ -7,3 +7,5 @@
 VkSurfaceKHR surface;
 
 void createSurface() { EH(glfwCreateWindowSurface(instance, window, nullptr, &surface)); }
+
+void cleanSurface() { vkDestroySurfaceKHR(instance, surface, nullptr); }

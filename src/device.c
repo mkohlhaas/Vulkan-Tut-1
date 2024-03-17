@@ -29,3 +29,5 @@ void createDevice() {
 
   vkGetDeviceQueue(device, queueFamilyIndex, 0, &queue);
 }
+
+void cleanDevice() { vkDestroyDevice(device, nullptr); }

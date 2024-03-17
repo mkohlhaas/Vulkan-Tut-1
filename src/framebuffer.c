@@ -25,3 +25,9 @@ void createFramebuffers() {
     EH(vkCreateFramebuffer(device, &framebufferCreateInfo, nullptr, &swapchainFramebuffers[i]));
   }
 }
+
+void cleanFramebuffers() {
+  for (int i = 0; i < swapchainImageCount; i++) {
+    vkDestroyFramebuffer(device, swapchainFramebuffers[i], nullptr);
+  }
+}

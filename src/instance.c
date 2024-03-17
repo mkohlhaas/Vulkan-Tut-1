@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <vulkan/vulkan_core.h>
 
+#ifndef NDEBUG
 VkInstance instance = VK_NULL_HANDLE;
 
-#ifndef NDEBUG
 #include <stdlib.h>
 #include <string.h>
 
@@ -90,7 +90,7 @@ static void createDebugMessenger() {
 
 // Open Vulkan library.
 // Sets `instance` variable.
-void initVulkan() {
+void createInstance() {
   dbgPrint("Initializing Vulkan…\n");
 
   // by GLFW required extensions
@@ -142,4 +142,23 @@ void initVulkan() {
 #ifndef NDEBUG
   createDebugMessenger();
 #endif
+}
+
+#ifndef NDEBUG
+static void destroyDebugMessenger() {
+  PFN_vkDestroyDebugUtilsMessengerEXT destroyDebugUtilsMessenger =
+      (PFN_vkDestroyDebugUtilsMessengerEXT)glfwGetInstanceProcAddress(instance, "vkDestroyDebugUtilsMessengerEXT");
+  if (destroyDebugUtilsMessenger) {
+    destroyDebugUtilsMessenger(instance, debugMessenger, nullptr);
+  } else {
+    fprintf(stderr, "Couldn't destroy debug messenger!\n");
+  }
+}
+#endif
+
+void cleanInstance() {
+#ifndef NDEBUG
+  destroyDebugMessenger(); // just before destroying the instance itself
+#endif
+  vkDestroyInstance(instance, nullptr);
 }

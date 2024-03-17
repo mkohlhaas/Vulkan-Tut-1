@@ -73,3 +73,10 @@ void createSwapchainImageViews() {
     swapchainImageViews[i] = view;
   }
 }
+
+void cleanSwapchain() {
+  for (int i = 0; i < swapchainImageCount; i++) {
+    vkDestroyImageView(device, swapchainImageViews[i], nullptr);
+  }
+  vkDestroySwapchainKHR(device, swapchain, nullptr);
+}

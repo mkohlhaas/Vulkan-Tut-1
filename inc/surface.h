@@ -5,3 +5,4 @@
 extern VkSurfaceKHR surface;
 
 void createSurface();
+void cleanSurface();

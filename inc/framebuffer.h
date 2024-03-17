@@ -5,3 +5,4 @@
 extern VkFramebuffer *swapchainFramebuffers;
 
 void createFramebuffers();
+void cleanFramebuffers();

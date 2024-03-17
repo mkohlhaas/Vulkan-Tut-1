@@ -6,3 +6,4 @@ extern VkDevice device;
 extern VkQueue queue;
 
 void createDevice();
+void cleanDevice();

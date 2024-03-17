@@ -5,3 +5,4 @@
 extern VkRenderPass renderPass;
 
 void createRenderPass();
+void cleanRenderPass();

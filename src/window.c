@@ -33,7 +33,7 @@ void initGlfw() {
   glfwSetKeyCallback(window, key_callback);
 }
 
-void cleanupGlfw() {
+void cleanGlfw() {
   glfwDestroyWindow(window);
   glfwTerminate();
 }

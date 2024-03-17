@@ -25,3 +25,7 @@ void allocateCommandBuffer() {
   };
   EH(vkAllocateCommandBuffers(device, &allocateInfo, &cmdBuffer));
 }
+
+void cleanCmdPool() {
+  vkDestroyCommandPool(device, cmdPool, nullptr);
+}

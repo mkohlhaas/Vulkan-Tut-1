@@ -6,4 +6,4 @@ extern GLFWwindow *window;
 
 void initGlfw();
 void mainLoop();
-void cleanupGlfw();
+void cleanGlfw();
