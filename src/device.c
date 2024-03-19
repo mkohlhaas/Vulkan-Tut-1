@@ -30,6 +30,6 @@ void createDevice() {
 
 VkQueue getDeviceQueue() { return queue; }
 
-void deviceWaitIdle() { vkDeviceWaitIdle(device); }
+void deviceWaitIdle() { EH(vkDeviceWaitIdle(device)); }
 
 void cleanDevice() { vkDestroyDevice(device, nullptr); }

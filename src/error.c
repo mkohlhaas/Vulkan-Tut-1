@@ -10,7 +10,7 @@ void handleError(const char *fileName, int lineNumber) {
   if (err) {
     switch (err) {
     case VK_SUCCESS:
-      fprintf(stderr, "This should never happen!");
+      fprintf(stderr, "Vulkan Success");
       isError = false;
       break;
     case VK_NOT_READY:
@@ -95,7 +95,8 @@ void handleError(const char *fileName, int lineNumber) {
       isError = false;
       break;
     case VK_ERROR_OUT_OF_DATE_KHR:
-      fprintf(stderr, "Vulkan Error: out of date");
+      fprintf(stderr, "Vulkan Warning: out of date");
+      isError = false;
       break;
     case VK_ERROR_INCOMPATIBLE_DISPLAY_KHR:
       fprintf(stderr, "Vulkan Error: incompatible display");

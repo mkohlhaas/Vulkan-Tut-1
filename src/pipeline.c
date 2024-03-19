@@ -2,7 +2,6 @@
 #include "error.h"
 #include "renderpass.h"
 #include <glib.h>
-#include <stdlib.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 

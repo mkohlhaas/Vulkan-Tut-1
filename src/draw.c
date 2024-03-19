@@ -5,6 +5,8 @@
 #include "record.h"
 #include "swapchain.h"
 #include "sync.h"
+#include "window.h"
+#include <stdbool.h>
 #include <vulkan/vulkan.h>
 
 static image_index_t imageIndex = UINT32_MAX;
@@ -12,14 +14,24 @@ static image_index_t imageIndex = UINT32_MAX;
 // Waits for `inFlightFence`.
 static void waitForInFlightFence() {
   EH(vkWaitForFences(device, 1, &inFlightFence[currentFrame], VK_TRUE, UINT64_MAX));
-  EH(vkResetFences(device, 1, &inFlightFence[currentFrame]));
 }
 
+static void resetFence() { EH(vkResetFences(device, 1, &inFlightFence[currentFrame])); }
+
 // Signals `imageAvailableSemaphore`.
-static image_index_t acquireNextImage() {
-  vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, imageAvailableSemaphore[currentFrame], VK_NULL_HANDLE,
-                        &imageIndex);
-  return imageIndex;
+static bool acquireNextImage() {
+  err = vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, imageAvailableSemaphore[currentFrame], VK_NULL_HANDLE,
+                              &imageIndex);
+
+  if (err == VK_ERROR_OUT_OF_DATE_KHR) {
+    recreateSwapchain();
+    imageIndex = UINT32_MAX;
+    return false;
+  } else if (err != VK_SUCCESS && err != VK_SUBOPTIMAL_KHR) {
+    handleError(__FILE_NAME__, __LINE__);
+  }
+
+  return true;
 }
 
 static void resetCmdBuffer() { EH(vkResetCommandBuffer(cmdBuffers[currentFrame], 0)); }
@@ -59,16 +71,26 @@ static void presentQueue() {
       .pSwapchains = &swapchain,
       .pImageIndices = &imageIndex,
   };
-  EH(vkQueuePresentKHR(getDeviceQueue(), &presentInfo));
+  err = vkQueuePresentKHR(getDeviceQueue(), &presentInfo);
+
+  if (err == VK_ERROR_OUT_OF_DATE_KHR || err == VK_SUBOPTIMAL_KHR || framebufferResized) {
+    framebufferResized = false;
+    recreateSwapchain();
+  } else if (err != VK_SUCCESS) {
+    handleError(__FILE_NAME__, __LINE__);
+  }
 }
 
 void updateFrameCounter() { currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; }
 
 void drawFrame() {
   waitForInFlightFence();
-  imageIndex = acquireNextImage();
+  updateFrameCounter();
+  if (!acquireNextImage()) {
+    return;
+  }
+  resetFence();
   recCmdBuffer();
   submitQueue();
   presentQueue();
-  updateFrameCounter();
 }

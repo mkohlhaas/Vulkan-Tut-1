@@ -2,10 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
-extern int width;
-extern int height;
-
 extern GLFWwindow *window;
+extern bool framebufferResized;
 
 // Destroys window and terminate GLFW.
 void initGlfw();

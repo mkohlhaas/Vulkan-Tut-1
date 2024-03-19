@@ -10,16 +10,20 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
-VkSwapchainKHR swapchain;
+VkSwapchainKHR swapchain = VK_NULL_HANDLE;
 VkFormat swapchainImageFormat = VK_FORMAT_B8G8R8A8_SRGB;
 VkExtent2D swapchainExtent;
 uint32_t swapchainImagesCount;
-VkImage *swapchainImages;
-VkImageView *swapchainImageViews;
-VkFramebuffer *framebuffers;
+VkImage *swapchainImages = nullptr;
+VkImageView *swapchainImageViews = nullptr;
+VkFramebuffer *framebuffers = nullptr;
 
 static void createFramebuffers() {
+  free(framebuffers);
   framebuffers = malloc(sizeof(VkFramebuffer) * swapchainImagesCount);
+  if (!framebuffers) {
+    logExit("Not enough memory");
+  }
 
   // TODO: is loop really necessary or can we just set `attachmentCount` ?
   for (int i = 0; i < swapchainImagesCount; i++) {
@@ -46,6 +50,7 @@ static void cleanFramebuffers() {
 static void createSwapchainImageViews() {
   VkImageView view;
 
+  free(swapchainImageViews);
   swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImagesCount);
   if (!swapchainImageViews) {
     logExit("Not enough memory");
@@ -62,7 +67,6 @@ static void createSwapchainImageViews() {
     EH(vkCreateImageView(device, &createInfo, nullptr, &view));
     swapchainImageViews[i] = view;
   }
-  createFramebuffers();
 }
 
 void createSwapchain() {
@@ -94,12 +98,16 @@ void createSwapchain() {
 
   // get swapchain images
   vkGetSwapchainImagesKHR(device, swapchain, &swapchainImagesCount, nullptr);
+  free(swapchainImages);
   swapchainImages = malloc(sizeof(VkImage) * swapchainImagesCount);
   if (!swapchainImages) {
     logExit("Not enough memory");
   }
   EH(vkGetSwapchainImagesKHR(device, swapchain, &swapchainImagesCount, swapchainImages));
+
   createSwapchainImageViews();
+
+  createFramebuffers();
 }
 
 void cleanSwapchain() {
@@ -113,11 +121,12 @@ void cleanSwapchain() {
 }
 
 void recreateSwapchain() {
-  glfwGetFramebufferSize(window, &width, &height);
+  int width, height;
+  glfwGetWindowSize(window, &width, &height);
 
   // minimized window
   while (width == 0 || height == 0) {
-    glfwGetFramebufferSize(window, &width, &height);
+    glfwGetWindowSize(window, &width, &height);
     glfwWaitEvents();
   }
 
