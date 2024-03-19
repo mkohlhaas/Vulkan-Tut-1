@@ -2,6 +2,9 @@
 
 #include <GLFW/glfw3.h>
 
+extern int width;
+extern int height;
+
 extern GLFWwindow *window;
 
 // Destroys window and terminate GLFW.

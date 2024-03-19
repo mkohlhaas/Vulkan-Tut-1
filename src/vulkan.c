@@ -1,6 +1,5 @@
 #include "cmdBuffer.h"
 #include "device.h"
-#include "framebuffer.h"
 #include "instance.h"
 #include "physical.h"
 #include "pipeline.h"
@@ -20,7 +19,6 @@ void initVulkan() {
   createRenderPass();
   createPipeline();
   createSwapchain();
-  createFramebuffers();
   createCmdBuffers();
   createSyncObjects();
 }

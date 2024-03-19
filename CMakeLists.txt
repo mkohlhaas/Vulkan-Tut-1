@@ -19,7 +19,6 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/device.c
                                src/draw.c
                                src/error.c
-                               src/framebuffer.c
                                src/globals.c
                                src/instance.c
                                src/physical.c

@@ -1,6 +1,5 @@
 #include "cmdBuffer.h"
 #include "device.h"
-#include "framebuffer.h"
 #include "instance.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -12,7 +11,6 @@
 void cleanVulkan() {
   // device related objects
   cleanCmdBuffer();
-  cleanFramebuffers();
   cleanRenderPass();
   cleanPipeline();
   cleanSwapchain();

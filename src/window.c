@@ -1,11 +1,12 @@
 #include "device.h"
 #include "draw.h"
+#include "swapchain.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
+int width = 800;
+int height = 600;
 
 GLFWwindow *window;
 
@@ -17,6 +18,8 @@ static void key_callback(GLFWwindow *window, int key, int scancode, int action, 
     glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
+static void onResize(GLFWwindow *window, int width, int height) { recreateSwapchain(); }
+
 void initGlfw() {
   glfwSetErrorCallback(error_callback);
 
@@ -25,13 +28,14 @@ void initGlfw() {
   }
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-  window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Tutorial", NULL, NULL);
+  // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+  window = glfwCreateWindow(width, height, "Vulkan Tutorial", NULL, NULL);
   if (!window) {
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
   glfwSetKeyCallback(window, key_callback);
+  glfwSetFramebufferSizeCallback(window, onResize);
 }
 
 void cleanGlfw() {

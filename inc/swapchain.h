@@ -8,9 +8,13 @@ extern VkExtent2D swapchainExtent;
 extern uint32_t swapchainImagesCount;
 extern VkImage *swapchainImages;
 extern VkImageView *swapchainImageViews;
+extern VkFramebuffer *framebuffers;
 
 // Sets `swapchain`, `swapchainImageFormat`, `swapchainExtent`, `swapchainImageCount`, `swapchainImageViews` variables.
 void createSwapchain();
 
-// Destroys swapchain andits image views.
+// Destroys swapchain and its image views.
 void cleanSwapchain();
+
+// Recreates swapchain (in case of window resize/minimization).
+void recreateSwapchain();
