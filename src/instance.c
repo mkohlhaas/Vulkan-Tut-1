@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <vulkan/vulkan_core.h>
 
-#ifndef NDEBUG
 VkInstance instance = VK_NULL_HANDLE;
 
+#ifndef NDEBUG
 #include <stdlib.h>
 #include <string.h>
 

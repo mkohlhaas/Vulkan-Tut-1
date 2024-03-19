@@ -14,52 +14,42 @@ link_libraries(${GLIB2_LIBRARIES})
 add_subdirectory(glfw)
 
 add_executable(${PROJECT_NAME} src/main.c
-                               src/window.c
-                               src/instance.c
                                src/clean.c
-                               src/error.c
-                               src/physical.c
+                               src/cmdBuffer.c
                                src/device.c
+                               src/draw.c
+                               src/error.c
+                               src/framebuffer.c
+                               src/instance.c
+                               src/physical.c
+                               src/pipeline.c
+                               src/record.c
+                               src/renderpass.c
                                src/surface.c
                                src/swapchain.c
-                               src/pipeline.c
-                               src/renderpass.c
-                               src/framebuffer.c
-                               src/cmdBuffer.c
-                               src/record.c
-                               src/vulkan.c
                                src/sync.c
-                               src/draw.c)
+                               src/vulkan.c
+                               src/window.c)
 
 target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)
 
 file(GLOB_RECURSE GLSL_SOURCE_FILES
-    "shaders/*.frag"
-    "shaders/*.vert"
-    )
+                  "shaders/*.frag"
+                  "shaders/*.vert")
 
 foreach(GLSL ${GLSL_SOURCE_FILES})
   get_filename_component(FILE_NAME ${GLSL} NAME)
   set(SPIRV "${PROJECT_BINARY_DIR}/shaders/${FILE_NAME}.spv")
-  add_custom_command(
-    OUTPUT ${SPIRV}
-    COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_BINARY_DIR}/shaders/"
-    COMMAND Vulkan::glslc ${GLSL} -o ${SPIRV}
-    DEPENDS ${GLSL})
+    add_custom_command(
+      OUTPUT ${SPIRV}
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${PROJECT_BINARY_DIR}/shaders/"
+      COMMAND Vulkan::glslc ${GLSL} -o ${SPIRV} "$<$<CONFIG:Debug,RelWithDebInfo>:-g>"
+      DEPENDS ${GLSL})
   list(APPEND SPIRV_BINARY_FILES ${SPIRV})
 endforeach(GLSL)
 
-add_custom_target(
-    Shaders
-    DEPENDS ${SPIRV_BINARY_FILES}
-    )
+add_custom_target(Shaders DEPENDS ${SPIRV_BINARY_FILES})
 
 add_dependencies(${PROJECT_NAME} Shaders)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory "$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders/"
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${PROJECT_BINARY_DIR}/shaders"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders")
