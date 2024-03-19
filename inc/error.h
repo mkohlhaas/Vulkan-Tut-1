@@ -5,13 +5,13 @@
 
 extern VkResult err;
 
-// Prints error message and exits application.
-void handleError();
+// Prints error or warning message and exits application in case of error.
+void handleError(const char *fileName, int lineNumber);
 
 // EH - Error Handling
 #define EH(c)                                                                                                          \
   err = c;                                                                                                             \
-  handleError();
+  handleError(__FILE__, __LINE__);
 
 #ifdef NDEBUG
 #define dbgPrint(fmt, ...)

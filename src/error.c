@@ -1,20 +1,25 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <vulkan/vulkan_core.h>
 
 VkResult err;
 
-static void _handleError(const char *fileName, int lineNumber) {
+void handleError(const char *fileName, int lineNumber) {
+  bool isError = true;
   if (err) {
     switch (err) {
     case VK_SUCCESS:
-      fprintf(stderr, "Vulkan Success: but still exiting! This should never happen!");
+      fprintf(stderr, "This should never happen!");
+      isError = false;
       break;
     case VK_NOT_READY:
-      fprintf(stderr, "Vulkan Error: not ready");
+      fprintf(stderr, "Vulkan Warning: not ready");
+      isError = false;
       break;
     case VK_TIMEOUT:
-      fprintf(stderr, "Vulkan Error: timeout");
+      fprintf(stderr, "Vulkan Warning: timeout");
+      isError = false;
       break;
     case VK_EVENT_SET:
       fprintf(stderr, "Vulkan Error: event set");
@@ -86,7 +91,8 @@ static void _handleError(const char *fileName, int lineNumber) {
       fprintf(stderr, "Vulkan Error: native window in use");
       break;
     case VK_SUBOPTIMAL_KHR:
-      fprintf(stderr, "Vulkan Error: suboptimal");
+      fprintf(stderr, "Vulkan Warning: suboptimal");
+      isError = false;
       break;
     case VK_ERROR_OUT_OF_DATE_KHR:
       fprintf(stderr, "Vulkan Error: out of date");
@@ -153,8 +159,8 @@ static void _handleError(const char *fileName, int lineNumber) {
       break;
     };
     fprintf(stderr, " in file %s, line %d, error code %d\n", fileName, lineNumber, err);
-    exit(EXIT_FAILURE);
+    if (isError) {
+      exit(EXIT_FAILURE);
+    }
   };
 }
-
-void handleError() { _handleError(__FILE__, __LINE__); }
