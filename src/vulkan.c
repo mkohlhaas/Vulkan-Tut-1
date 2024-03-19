@@ -21,6 +21,6 @@ void initVulkan() {
   createPipeline();
   createSwapchain();
   createFramebuffers();
-  createCmdBuffer();
+  createCmdBuffers();
   createSyncObjects();
 }

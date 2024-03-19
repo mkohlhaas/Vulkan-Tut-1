@@ -1,6 +1,7 @@
 #include "cmdBuffer.h"
 #include "device.h"
 #include "error.h"
+#include "globals.h"
 #include "record.h"
 #include "swapchain.h"
 #include "sync.h"
@@ -10,17 +11,18 @@ static image_index_t imageIndex = UINT32_MAX;
 
 // Waits for `inFlightFence`.
 static void waitForInFlightFence() {
-  EH(vkWaitForFences(device, 1, &inFlightFence, VK_TRUE, UINT64_MAX));
-  EH(vkResetFences(device, 1, &inFlightFence));
+  EH(vkWaitForFences(device, 1, &inFlightFence[currentFrame], VK_TRUE, UINT64_MAX));
+  EH(vkResetFences(device, 1, &inFlightFence[currentFrame]));
 }
 
 // Signals `imageAvailableSemaphore`.
 static image_index_t acquireNextImage() {
-  vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, imageAvailableSemaphore, VK_NULL_HANDLE, &imageIndex);
+  vkAcquireNextImageKHR(device, swapchain, UINT64_MAX, imageAvailableSemaphore[currentFrame], VK_NULL_HANDLE,
+                        &imageIndex);
   return imageIndex;
 }
 
-static void resetCmdBuffer() { EH(vkResetCommandBuffer(cmdBuffer, 0)); }
+static void resetCmdBuffer() { EH(vkResetCommandBuffer(cmdBuffers[currentFrame], 0)); }
 
 // Reset comamand buffer and re-record it.
 static void recCmdBuffer() {
@@ -36,15 +38,15 @@ static void submitQueue() {
   VkSubmitInfo submitInfo = {
       .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
       .waitSemaphoreCount = 1,
-      .pWaitSemaphores = &imageAvailableSemaphore,
+      .pWaitSemaphores = &imageAvailableSemaphore[currentFrame],
       .pWaitDstStageMask = waitStages,
       .commandBufferCount = 1,
-      .pCommandBuffers = &cmdBuffer,
+      .pCommandBuffers = &cmdBuffers[currentFrame],
       .signalSemaphoreCount = 1,
-      .pSignalSemaphores = &renderFinishedSemaphore,
+      .pSignalSemaphores = &renderFinishedSemaphore[currentFrame],
   };
 
-  EH(vkQueueSubmit(getDeviceQueue(), 1, &submitInfo, inFlightFence));
+  EH(vkQueueSubmit(getDeviceQueue(), 1, &submitInfo, inFlightFence[currentFrame]));
 }
 
 // Waits for `renderFinishedSemaphore`.
@@ -52,7 +54,7 @@ static void presentQueue() {
   VkPresentInfoKHR presentInfo = {
       .sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
       .waitSemaphoreCount = 1,
-      .pWaitSemaphores = &renderFinishedSemaphore,
+      .pWaitSemaphores = &renderFinishedSemaphore[currentFrame],
       .swapchainCount = 1,
       .pSwapchains = &swapchain,
       .pImageIndices = &imageIndex,
@@ -60,10 +62,13 @@ static void presentQueue() {
   EH(vkQueuePresentKHR(getDeviceQueue(), &presentInfo));
 }
 
+void updateFrameCounter() { currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; }
+
 void drawFrame() {
   waitForInFlightFence();
   imageIndex = acquireNextImage();
   recCmdBuffer();
   submitQueue();
   presentQueue();
+  updateFrameCounter();
 }

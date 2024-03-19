@@ -2,10 +2,10 @@
 
 #include <vulkan/vulkan.h>
 
-extern VkCommandBuffer cmdBuffer;
+extern VkCommandBuffer cmdBuffers[];
 
 // Creates a command buffer.
-void createCmdBuffer();
+void createCmdBuffers();
 
 // Destroys command buffer.
 void cleanCmdBuffer();
