@@ -6,34 +6,35 @@
 #include <string.h>
 #include <vulkan/vulkan_core.h>
 
-VkBuffer vertexBuffer = VK_NULL_HANDLE;
-VkDeviceMemory vertexBufferMemory = VK_NULL_HANDLE;
+VkBuffer indexBuffer;
+VkDeviceMemory indexBufferMemory;
 
-void createVertexBuffer() {
+void createIndexBuffer() {
+  VkDeviceSize bufferSize = numIndices * sizeof(vertex_index_t);
+
   // create staging buffer
-  VkDeviceSize bufferSize = numVertices * sizeof(Vertex);
   VkBufferUsageFlags usages = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
   VkMemoryPropertyFlags props = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
   VkBuffer stagingBuffer;
   VkDeviceMemory stagingBufferMemory;
   createBuffer(bufferSize, usages, props, &stagingBuffer, &stagingBufferMemory);
 
-  // creates vertex buffer using local GPU memory
-  usages = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+  // create index buffer
+  usages = VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
   props = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
-  createBuffer(bufferSize, usages, props, &vertexBuffer, &vertexBufferMemory);
+  createBuffer(bufferSize, usages, props, &indexBuffer, &indexBufferMemory);
 
-  // copy vertices to staging buffer
+  // copy indices to staging buffer
   void *data;
   EH(vkMapMemory(device, stagingBufferMemory, 0, bufferSize, 0, &data));
-  memcpy(data, vertices, bufferSize);
+  memcpy(data, indices, bufferSize);
   vkUnmapMemory(device, stagingBufferMemory);
 
-  // copy staging to vertex buffer
-  copyBuffer(stagingBuffer, vertexBuffer, bufferSize);
+  // copy staging to index buffer
+  copyBuffer(stagingBuffer, indexBuffer, bufferSize);
 
   // destroy staging buffer and free its bound memory
   destroyBuffer(stagingBuffer, stagingBufferMemory);
 }
 
-void destroyVertexBuffer() { destroyBuffer(vertexBuffer, vertexBufferMemory); }
+void destroyIndexBuffer() { destroyBuffer(indexBuffer, indexBufferMemory); }

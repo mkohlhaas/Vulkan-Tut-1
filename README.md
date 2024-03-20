@@ -40,3 +40,4 @@ git config --list --local                            # check settings
 - Fences (*CPU*, *GPU*)
   - A fence is for ordering the execution on the *CPU*. If the host needs to know when the GPU has finished something, we use a fence.
   - Fences are used to keep the CPU and GPU in sync with each-other.
+- [Vulkan Memory Allocator](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)

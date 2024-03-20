@@ -3,8 +3,9 @@
 #include <vulkan/vulkan.h>
 
 extern VkCommandBuffer cmdBuffers[];
+extern VkCommandPool cmdPool;
 
-// Creates command buffers.
+// Creates command pool and command buffers.
 void createCmdBuffers();
 
 // Destroys command buffers.

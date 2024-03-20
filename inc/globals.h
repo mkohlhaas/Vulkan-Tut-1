@@ -14,3 +14,9 @@ extern const Vertex vertices[];
 
 // Number of vertices.
 extern size_t numVertices;
+
+// The indices.
+extern const vertex_index_t indices[];
+
+// Number of indices.
+extern size_t numIndices;

@@ -1,6 +1,7 @@
 #include "cmdBuffer.h"
 #include "error.h"
 #include "globals.h"
+#include "indexBuffer.h"
 #include "pipeline.h"
 #include "renderpass.h"
 #include "swapchain.h"
@@ -46,17 +47,18 @@ static void setScissor() {
   vkCmdSetScissor(cmdBuffers[currentFrame], 0, 1, &scissor);
 }
 
-static void draw() { vkCmdDraw(cmdBuffers[currentFrame], numVertices, 1, 0, 0); }
+static void draw() { vkCmdDrawIndexed(cmdBuffers[currentFrame], numIndices, 1, 0, 0, 0); }
 
 static void endRenderPass() { vkCmdEndRenderPass(cmdBuffers[currentFrame]); }
 
 static void endCmdBuffer() { EH(vkEndCommandBuffer(cmdBuffers[currentFrame])); }
 
-void bindVertexBuffers() {
+static void bindBuffers() {
   VkBuffer vertexBuffers[] = {vertexBuffer};
   uint32_t numBindings = sizeof(vertexBuffers) / sizeof(VkBuffer);
   VkDeviceSize offsets[] = {0};
   vkCmdBindVertexBuffers(cmdBuffers[currentFrame], 0, numBindings, vertexBuffers, offsets);
+  vkCmdBindIndexBuffer(cmdBuffers[currentFrame], indexBuffer, 0, VK_INDEX_TYPE_UINT16);
 }
 
 void recordCmdBuffer(image_index_t imageIndex) {
@@ -65,7 +67,7 @@ void recordCmdBuffer(image_index_t imageIndex) {
   bindPipeline();
   setViewport();
   setScissor();
-  bindVertexBuffers();
+  bindBuffers();
   draw();
   endRenderPass();
   endCmdBuffer();

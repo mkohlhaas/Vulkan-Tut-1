@@ -1,10 +1,10 @@
-#include "error.h"
 #include "cmdBuffer.h"
 #include "device.h"
 #include "instance.h"
 #include "physical.h"
 #include "pipeline.h"
 #include "renderpass.h"
+#include "indexBuffer.h"
 #include "surface.h"
 #include "swapchain.h"
 #include "sync.h"
@@ -21,8 +21,9 @@ void initVulkan() {
   createRenderPass();
   createPipeline();
   createSwapchain();
-  createVertexBuffer();
   createCmdBuffers();
+  createVertexBuffer();
+  createIndexBuffer();
   createSyncObjects();
 }
 
@@ -31,8 +32,9 @@ void closeVulkan() {
 
   // device related objects
   destroySyncObjects();
-  destroyCmdBuffers();
+  destroyIndexBuffer();
   destroyVertexBuffer();
+  destroyCmdBuffers();
   destroySwapchain();
   destroyPipeline();
   destroyRenderPass();
