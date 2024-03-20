@@ -7,6 +7,7 @@
 #include "surface.h"
 #include "swapchain.h"
 #include "sync.h"
+#include "vertexBuffer.h"
 
 void initVulkan() {
   createInstance();
@@ -19,6 +20,7 @@ void initVulkan() {
   createRenderPass();
   createPipeline();
   createSwapchain();
+  createVertexBuffer();
   createCmdBuffers();
   createSyncObjects();
 }

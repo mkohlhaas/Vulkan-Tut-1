@@ -6,15 +6,16 @@
 #include "surface.h"
 #include "swapchain.h"
 #include "sync.h"
-#include <vulkan/vulkan_core.h>
+#include "vertexBuffer.h"
 
 void closeVulkan() {
   // device related objects
-  closeCmdBuffers();
-  closeRenderPass();
-  closePipeline();
-  closeSwapchain();
   closeSyncObjects();
+  closeCmdBuffers();
+  closeVertexBuffer();
+  closeSwapchain();
+  closePipeline();
+  closeRenderPass();
   closeDevice();
 
   // instance related objects

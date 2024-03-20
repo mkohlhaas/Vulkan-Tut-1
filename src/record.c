@@ -5,6 +5,7 @@
 #include "renderpass.h"
 #include "swapchain.h"
 #include "types.h"
+#include "vertexBuffer.h"
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
@@ -45,11 +46,18 @@ static void setScissor() {
   vkCmdSetScissor(cmdBuffers[currentFrame], 0, 1, &scissor);
 }
 
-static void draw() { vkCmdDraw(cmdBuffers[currentFrame], 3, 1, 0, 0); }
+static void draw() { vkCmdDraw(cmdBuffers[currentFrame], numVertices, 1, 0, 0); }
 
 static void endRenderPass() { vkCmdEndRenderPass(cmdBuffers[currentFrame]); }
 
 static void endCmdBuffer() { EH(vkEndCommandBuffer(cmdBuffers[currentFrame])); }
+
+void bindVertexBuffers() {
+  VkBuffer vertexBuffers[] = {vertexBuffer};
+  uint32_t numBindings = sizeof(vertexBuffers) / sizeof(VkBuffer);
+  VkDeviceSize offsets[] = {0};
+  vkCmdBindVertexBuffers(cmdBuffers[currentFrame], 0, numBindings, vertexBuffers, offsets);
+}
 
 void recordCmdBuffer(image_index_t imageIndex) {
   beginCmdBuffer();
@@ -57,6 +65,7 @@ void recordCmdBuffer(image_index_t imageIndex) {
   bindPipeline();
   setViewport();
   setScissor();
+  bindVertexBuffers();
   draw();
   endRenderPass();
   endCmdBuffer();

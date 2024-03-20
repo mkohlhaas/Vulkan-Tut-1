@@ -35,6 +35,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/surface.c
                                src/swapchain.c
                                src/sync.c
+                               src/vertexBuffer.c
                                src/vulkan.c
                                src/window.c)
 

@@ -1,6 +1,7 @@
 #include "device.h"
 #include "error.h"
 #include "globals.h"
+#include <stdio.h>
 #include <vulkan/vulkan.h>
 
 VkSemaphore imageAvailableSemaphore[MAX_FRAMES_IN_FLIGHT] = {};

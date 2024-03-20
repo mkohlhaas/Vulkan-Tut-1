@@ -11,3 +11,6 @@ extern uint8_t currentFrame;
 
 // The vertices.
 extern const Vertex vertices[];
+
+// Number of vertices.
+extern size_t numVertices;
