@@ -14,7 +14,7 @@ extern VkFramebuffer *framebuffers;
 void createSwapchain();
 
 // Destroys swapchain and its image views.
-void cleanSwapchain();
+void closeSwapchain();
 
 // Recreates swapchain (in case of window resize/minimization).
 void recreateSwapchain();

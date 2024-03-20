@@ -8,4 +8,4 @@ extern VkPipeline pipeline;
 void createPipeline();
 
 // Destroys graphics pipeline.
-void cleanPipeline();
+void closePipeline();

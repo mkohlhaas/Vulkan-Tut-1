@@ -8,16 +8,16 @@
 #include "sync.h"
 #include <vulkan/vulkan_core.h>
 
-void cleanVulkan() {
+void closeVulkan() {
   // device related objects
-  cleanCmdBuffer();
-  cleanRenderPass();
-  cleanPipeline();
-  cleanSwapchain();
-  cleanSyncObjects();
-  cleanDevice();
+  closeCmdBuffers();
+  closeRenderPass();
+  closePipeline();
+  closeSwapchain();
+  closeSyncObjects();
+  closeDevice();
 
   // instance related objects
-  cleanSurface();
-  cleanInstance();
+  closeSurface();
+  closeInstance();
 }

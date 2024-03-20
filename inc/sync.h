@@ -10,4 +10,4 @@ extern VkFence inFlightFence[];
 void createSyncObjects();
 
 // Destroys all synchronization objects.
-void cleanSyncObjects();
+void closeSyncObjects();

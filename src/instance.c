@@ -159,7 +159,7 @@ static void destroyDebugMessenger() {
 }
 #endif
 
-void cleanInstance() {
+void closeInstance() {
 #ifndef NDEBUG
   destroyDebugMessenger(); // just before destroying the instance itself
 #endif

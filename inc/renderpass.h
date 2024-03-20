@@ -8,4 +8,4 @@ extern VkRenderPass renderPass;
 void createRenderPass();
 
 // Destroys render pass.
-void cleanRenderPass();
+void closeRenderPass();

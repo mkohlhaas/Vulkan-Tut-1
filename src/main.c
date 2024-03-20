@@ -3,5 +3,5 @@
 int main(void) {
   initialize();
   mainLoop();
-  cleanup();
+  shutdown();
 }

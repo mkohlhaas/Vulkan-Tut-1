@@ -12,4 +12,4 @@ void initGlfw();
 void mainLoop();
 
 // Closes window and terminates GLFW.
-void cleanGlfw();
+void closeGlfw();

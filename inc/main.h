@@ -1,6 +1,6 @@
 #pragma once
 
-#include "clean.h"
+#include "close.h"
 #include "vulkan.h"
 #include "window.h"
 
@@ -9,7 +9,7 @@ void initialize() {
   initVulkan();
 }
 
-void cleanup() {
-  cleanVulkan();
-  cleanGlfw();
+void shutdown() {
+  closeVulkan();
+  closeGlfw();
 }

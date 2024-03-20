@@ -41,7 +41,7 @@ static void createFramebuffers() {
   }
 }
 
-static void cleanFramebuffers() {
+static void closeFramebuffers() {
   for (int i = 0; i < swapchainImagesCount; i++) {
     vkDestroyFramebuffer(device, framebuffers[i], nullptr);
   }
@@ -110,8 +110,8 @@ void createSwapchain() {
   createFramebuffers();
 }
 
-void cleanSwapchain() {
-  cleanFramebuffers();
+void closeSwapchain() {
+  closeFramebuffers();
 
   for (int i = 0; i < swapchainImagesCount; i++) {
     vkDestroyImageView(device, swapchainImageViews[i], nullptr);
@@ -132,6 +132,6 @@ void recreateSwapchain() {
 
   deviceWaitIdle();
 
-  cleanSwapchain();
+  closeSwapchain();
   createSwapchain();
 }

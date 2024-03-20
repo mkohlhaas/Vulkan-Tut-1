@@ -22,7 +22,7 @@ void createSyncObjects() {
   }
 }
 
-void cleanSyncObjects() {
+void closeSyncObjects() {
   for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
     vkDestroySemaphore(device, renderFinishedSemaphore[i], nullptr);
     vkDestroySemaphore(device, imageAvailableSemaphore[i], nullptr);

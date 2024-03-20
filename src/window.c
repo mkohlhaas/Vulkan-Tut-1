@@ -39,7 +39,7 @@ void initGlfw() {
   // glfwSetFramebufferSizeCallback(window, onResize);
 }
 
-void cleanGlfw() {
+void closeGlfw() {
   glfwDestroyWindow(window);
   glfwTerminate();
 }

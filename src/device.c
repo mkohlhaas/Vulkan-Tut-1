@@ -3,7 +3,7 @@
 #include <vulkan/vulkan.h>
 
 VkDevice device = VK_NULL_HANDLE;
-VkQueue queue = VK_NULL_HANDLE;
+VkQueue deviceQueue = VK_NULL_HANDLE;
 
 void createDevice() {
   float queuePriorities = 1.0f;
@@ -25,11 +25,9 @@ void createDevice() {
   };
   EH(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
 
-  vkGetDeviceQueue(device, getQueueFamilyIndex(), 0, &queue);
+  vkGetDeviceQueue(device, getQueueFamilyIndex(), 0, &deviceQueue);
 }
-
-VkQueue getDeviceQueue() { return queue; }
 
 void deviceWaitIdle() { EH(vkDeviceWaitIdle(device)); }
 
-void cleanDevice() { vkDestroyDevice(device, nullptr); }
+void closeDevice() { vkDestroyDevice(device, nullptr); }

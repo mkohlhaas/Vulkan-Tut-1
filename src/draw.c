@@ -58,7 +58,7 @@ static void submitQueue() {
       .pSignalSemaphores = &renderFinishedSemaphore[currentFrame],
   };
 
-  EH(vkQueueSubmit(getDeviceQueue(), 1, &submitInfo, inFlightFence[currentFrame]));
+  EH(vkQueueSubmit(deviceQueue, 1, &submitInfo, inFlightFence[currentFrame]));
 }
 
 // Waits for `renderFinishedSemaphore`.
@@ -71,7 +71,7 @@ static void presentQueue() {
       .pSwapchains = &swapchain,
       .pImageIndices = &imageIndex,
   };
-  err = vkQueuePresentKHR(getDeviceQueue(), &presentInfo);
+  err = vkQueuePresentKHR(deviceQueue, &presentInfo);
 
   if (err == VK_ERROR_OUT_OF_DATE_KHR || err == VK_SUBOPTIMAL_KHR || framebufferResized) {
     framebufferResized = false;

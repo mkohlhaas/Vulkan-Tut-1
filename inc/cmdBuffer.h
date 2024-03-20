@@ -8,4 +8,4 @@ extern VkCommandBuffer cmdBuffers[];
 void createCmdBuffers();
 
 // Destroys command buffer.
-void cleanCmdBuffer();
+void closeCmdBuffers();

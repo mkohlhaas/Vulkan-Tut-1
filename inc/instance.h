@@ -8,4 +8,4 @@ extern VkInstance instance;
 void createInstance();
 
 // Closes Vulkan™ library.
-void cleanInstance();
+void closeInstance();

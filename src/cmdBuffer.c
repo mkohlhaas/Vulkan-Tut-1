@@ -8,7 +8,7 @@
 VkCommandPool cmdPool;
 VkCommandBuffer cmdBuffers[MAX_FRAMES_IN_FLIGHT];
 
-void allocateCommandBuffers() {
+static void allocateCommandBuffers() {
   VkCommandBufferAllocateInfo allocateInfo = {
       .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
       .commandPool = cmdPool,
@@ -28,4 +28,4 @@ void createCmdBuffers() {
   allocateCommandBuffers();
 }
 
-void cleanCmdBuffer() { vkDestroyCommandPool(device, cmdPool, nullptr); }
+void closeCmdBuffers() { vkDestroyCommandPool(device, cmdPool, nullptr); }
