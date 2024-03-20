@@ -29,14 +29,13 @@ void initGlfw() {
   }
 
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-  // glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
   window = glfwCreateWindow(width, height, "Vulkan Tutorial", NULL, NULL);
   if (!window) {
     glfwTerminate();
     exit(EXIT_FAILURE);
   }
   glfwSetKeyCallback(window, key_callback);
-  // glfwSetFramebufferSizeCallback(window, onResize);
+  glfwSetFramebufferSizeCallback(window, onResize);
 }
 
 void closeGlfw() {
