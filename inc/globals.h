@@ -1,5 +1,6 @@
 #pragma once
 
+#include "types.h"
 #include <stdint.h>
 
 // Maximum frames in flight.
@@ -7,3 +8,6 @@
 
 // The current frame.
 extern uint8_t currentFrame;
+
+// The vertices.
+extern const Vertex vertices[];

@@ -11,6 +11,13 @@ include_directories(${GLIB2_INCLUDE_DIRS})
 link_directories(${GLIB2_LIBRARY_DIRS})
 link_libraries(${GLIB2_LIBRARIES})
 
+# cglm
+pkg_check_modules(CGLM REQUIRED cglm)
+include_directories(${CGLM_INCLUDE_DIRS})
+link_directories(${CGLM_LIBRARY_DIRS})
+link_libraries(${CGLM_LIBRARIES})
+
+# GLFW
 add_subdirectory(glfw)
 
 add_executable(${PROJECT_NAME} src/main.c

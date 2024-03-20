@@ -1,6 +1,7 @@
 #include "device.h"
 #include "error.h"
 #include "renderpass.h"
+#include "types.h"
 #include <glib.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -76,8 +77,31 @@ void createPipeline() {
   };
 
   // Vertex Input
+  VkVertexInputBindingDescription bindingDescriptions[] = {{
+      .binding = 0,
+      .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
+      .stride = sizeof(Vertex),
+  }};
+  VkVertexInputAttributeDescription attributeDescriptions[] = {{
+                                                                   .binding = 0,
+                                                                   .location = 0,
+                                                                   .format = VK_FORMAT_R32G32_SFLOAT,
+                                                                   .offset = offsetof(Vertex, pos),
+                                                               },
+                                                               {
+
+                                                                   .binding = 0,
+                                                                   .location = 1,
+                                                                   .format = VK_FORMAT_R32G32B32_SFLOAT,
+                                                                   .offset = offsetof(Vertex, color),
+                                                               }};
+
   VkPipelineVertexInputStateCreateInfo vertexInput = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
+      .vertexBindingDescriptionCount = sizeof(bindingDescriptions) / sizeof(VkVertexInputBindingDescription),
+      .pVertexBindingDescriptions = bindingDescriptions,
+      .vertexAttributeDescriptionCount = sizeof(attributeDescriptions) / sizeof(VkVertexInputAttributeDescription),
+      .pVertexAttributeDescriptions = attributeDescriptions,
   };
 
   // Input Assembly

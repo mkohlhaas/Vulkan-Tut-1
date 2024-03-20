@@ -31,6 +31,7 @@ git config --list --local                            # check settings
   - [Deferred Shading](https://www.youtube.com/watch?v=6Qnv7jssdYc)
 - [Graphics Pipeline](https://vulkan-tutorial.com/images/vulkan_simplified_pipeline.svg)
 - [GLSL docs](https://docs.gl/#)
+- [Layout Qualifier (GLSL)](https://www.khronos.org/opengl/wiki/Layout_Qualifier_(GLSL))
 - [Normalized Device Coordinates in Vulkan(NDC)](https://vulkan-tutorial.com/images/normalized_device_coordinates.svg)
 - Semaphores (*GPU*)
   - Semaphores are used both to order work inside the same queue and between different queues.
