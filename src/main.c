@@ -1,7 +1,7 @@
 #include "main.h"
 
 int main(void) {
-  initialize();
+  startup();
   mainLoop();
   shutdown();
 }

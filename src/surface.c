@@ -8,4 +8,4 @@ VkSurfaceKHR surface;
 
 void createSurface() { EH(glfwCreateWindowSurface(instance, window, nullptr, &surface)); }
 
-void closeSurface() { vkDestroySurfaceKHR(instance, surface, nullptr); }
+void destroySurface() { vkDestroySurfaceKHR(instance, surface, nullptr); }

@@ -10,11 +10,11 @@ extern VkImage *swapchainImages;
 extern VkImageView *swapchainImageViews;
 extern VkFramebuffer *framebuffers;
 
-// Sets `swapchain`, `swapchainImageFormat`, `swapchainExtent`, `swapchainImageCount`, `swapchainImageViews` variables.
+// Sets `swapchain`, `swapchainImageFormat`, `swapchainExtent`, `swapchainImageCount`, `swapchainImageViews`, `framebuffers` variables.
 void createSwapchain();
 
-// Destroys swapchain and its image views.
-void closeSwapchain();
+// Destroys swapchain, its image views and framebuffers.
+void destroySwapchain();
 
 // Recreates swapchain (in case of window resize/minimization).
 void recreateSwapchain();

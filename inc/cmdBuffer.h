@@ -4,8 +4,8 @@
 
 extern VkCommandBuffer cmdBuffers[];
 
-// Creates a command buffer.
+// Creates command buffers.
 void createCmdBuffers();
 
-// Destroys command buffer.
-void closeCmdBuffers();
+// Destroys command buffers.
+void destroyCmdBuffers();

@@ -12,4 +12,4 @@ void createDevice();
 void deviceWaitIdle();
 
 // Destroys logical device.
-void closeDevice();
+void destroyDevice();

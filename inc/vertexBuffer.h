@@ -4,6 +4,8 @@
 
 extern VkBuffer vertexBuffer;
 
+// Creates vertex buffer.
 void createVertexBuffer();
 
-void closeVertexBuffer();
+// Destroys vertex buffer.
+void destroyVertexBuffer();

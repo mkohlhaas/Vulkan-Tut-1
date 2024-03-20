@@ -1,4 +1,3 @@
-#include "device.h"
 #include "draw.h"
 #include <GLFW/glfw3.h>
 #include <stdbool.h>
@@ -48,5 +47,4 @@ void mainLoop() {
     glfwPollEvents();
     drawFrame();
   }
-  deviceWaitIdle();
 }

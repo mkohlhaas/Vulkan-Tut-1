@@ -1,15 +1,16 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+#include <stdbool.h>
 
 extern GLFWwindow *window;
 extern bool framebufferResized;
 
-// Destroys window and terminate GLFW.
+// Creates GLFW window.
 void initGlfw();
 
 // Polls events and draws frames.
 void mainLoop();
 
-// Closes window and terminates GLFW.
+// Destroys window and terminate GLFW.
 void closeGlfw();

@@ -1,15 +1,14 @@
-#pragma once
-
-#include "close.h"
 #include "vulkan.h"
 #include "window.h"
 
-void initialize() {
+// Start GLFW and Vulkan.
+static void startup() {
   initGlfw();
   initVulkan();
 }
 
-void shutdown() {
+// Shuts down GLFW and Vulkan.
+static void shutdown() {
   closeVulkan();
   closeGlfw();
 }

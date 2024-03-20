@@ -11,7 +11,7 @@ VkInstance instance = VK_NULL_HANDLE;
 
 VkDebugUtilsMessengerEXT debugMessenger = VK_NULL_HANDLE;
 
-static const char *requiredValidationLayers[] = {"VK_LAYER_KHRONOS_validation" /* bundle of validation layers */};
+static const char *requiredValidationLayers[] = {"VK_LAYER_KHRONOS_validation"};
 
 // print debug messages to console
 static VkBool32 debugUtilsMessengerCB(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
@@ -159,7 +159,7 @@ static void destroyDebugMessenger() {
 }
 #endif
 
-void closeInstance() {
+void destroyInstance() {
 #ifndef NDEBUG
   destroyDebugMessenger(); // just before destroying the instance itself
 #endif

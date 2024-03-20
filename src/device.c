@@ -28,6 +28,8 @@ void createDevice() {
   vkGetDeviceQueue(device, getQueueFamilyIndex(), 0, &deviceQueue);
 }
 
-void deviceWaitIdle() { EH(vkDeviceWaitIdle(device)); }
+void deviceWaitIdle() {
+  EH(vkDeviceWaitIdle(device));
+}
 
-void closeDevice() { vkDestroyDevice(device, nullptr); }
+void destroyDevice() { vkDestroyDevice(device, nullptr); }

@@ -8,4 +8,4 @@ extern VkSurfaceKHR surface;
 void createSurface();
 
 // Destroys surface.
-void closeSurface();
+void destroySurface();

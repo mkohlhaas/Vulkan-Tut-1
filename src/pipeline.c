@@ -174,7 +174,7 @@ void createPipeline() {
   vkDestroyShaderModule(device, vertShaderModule, nullptr);
 }
 
-void closePipeline() {
+void destroyPipeline() {
   vkDestroyPipelineLayout(device, pipelineLayout, nullptr);
   vkDestroyPipeline(device, pipeline, nullptr);
 }

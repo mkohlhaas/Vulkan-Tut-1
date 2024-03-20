@@ -21,7 +21,6 @@ link_libraries(${CGLM_LIBRARIES})
 add_subdirectory(glfw)
 
 add_executable(${PROJECT_NAME} src/main.c
-                               src/close.c
                                src/cmdBuffer.c
                                src/device.c
                                src/draw.c

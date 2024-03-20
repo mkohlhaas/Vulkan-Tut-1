@@ -59,7 +59,7 @@ void createVertexBuffer() {
   vkUnmapMemory(device, vertexBufferMemory);
 }
 
-void closeVertexBuffer() {
+void destroyVertexBuffer() {
   vkDestroyBuffer(device, vertexBuffer, nullptr);
   vkFreeMemory(device, vertexBufferMemory, nullptr);
 }

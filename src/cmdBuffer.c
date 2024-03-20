@@ -28,4 +28,4 @@ void createCmdBuffers() {
   allocateCommandBuffers();
 }
 
-void closeCmdBuffers() { vkDestroyCommandPool(device, cmdPool, nullptr); }
+void destroyCmdBuffers() { vkDestroyCommandPool(device, cmdPool, nullptr); }

@@ -51,4 +51,4 @@ void createRenderPass() {
   EH(vkCreateRenderPass(device, &renderPassCreateInfo, nullptr, &renderPass));
 }
 
-void closeRenderPass() { vkDestroyRenderPass(device, renderPass, nullptr); }
+void destroyRenderPass() { vkDestroyRenderPass(device, renderPass, nullptr); }
