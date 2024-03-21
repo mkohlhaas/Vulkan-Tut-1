@@ -3,6 +3,7 @@
 #include "device.h"
 #include "indexBuffer.h"
 #include "instance.h"
+#include "loadAssets.h"
 #include "physical.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -26,6 +27,7 @@ void initVulkan() {
   createPipeline();
   createSwapchain();
   createCmdBuffers();
+  loadAssets();
   createVertexBuffer();
   createIndexBuffer();
   createSyncObjects();
@@ -40,6 +42,7 @@ void closeVulkan() {
   destroyUniformBuffers();
   destroyIndexBuffer();
   destroyVertexBuffer();
+  unloadAssets();
   destroyCmdBuffers();
   destroySwapchain();
   destroyPipeline();

@@ -11,3 +11,6 @@ void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
 
 // Destroys buffer and its bound memory.
 void destroyBuffer(VkBuffer buffer, VkDeviceMemory memory);
+
+// Finds memory based on usage and properties.
+uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);

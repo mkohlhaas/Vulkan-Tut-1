@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vulkan/vulkan.h>
 
 // Model, view, projection matrices descriptor set layout

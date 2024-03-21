@@ -34,6 +34,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/globals.c
                                src/indexBuffer.c
                                src/instance.c
+                               src/loadAssets.c
                                src/physical.c
                                src/pipeline.c
                                src/record.c
@@ -41,6 +42,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/surface.c
                                src/swapchain.c
                                src/sync.c
+                               src/texture.c
                                src/uniformBuffers.c
                                src/vertexBuffer.c
                                src/vulkan.c
@@ -68,3 +70,8 @@ endforeach(GLSL)
 add_custom_target(Shaders DEPENDS ${SPIRV_BINARY_FILES})
 
 add_dependencies(${PROJECT_NAME} Shaders)
+
+add_custom_command(TARGET ${PROJECT_NAME}  POST_BUILD
+                   COMMAND ${CMAKE_COMMAND} -E copy_directory
+                           ${CMAKE_CURRENT_SOURCE_DIR}/assets
+                           ${CMAKE_CURRENT_BINARY_DIR}/assets)

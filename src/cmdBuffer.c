@@ -29,3 +29,39 @@ void createCmdBuffers() {
 }
 
 void destroyCmdBuffers() { vkDestroyCommandPool(device, cmdPool, nullptr); }
+
+VkCommandBuffer beginSingleTimeCommands() {
+  VkCommandBufferAllocateInfo allocInfo = {
+      .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+      .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+      .commandPool = cmdPool,
+      .commandBufferCount = 1,
+  };
+
+  VkCommandBuffer commandBuffer;
+  EH(vkAllocateCommandBuffers(device, &allocInfo, &commandBuffer));
+
+  VkCommandBufferBeginInfo beginInfo = {
+      .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
+      .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
+  };
+
+  EH(vkBeginCommandBuffer(commandBuffer, &beginInfo));
+
+  return commandBuffer;
+}
+
+void endSingleTimeCommands(VkCommandBuffer commandBuffer) {
+  EH(vkEndCommandBuffer(commandBuffer));
+
+  VkSubmitInfo submitInfo = {
+      .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
+      .commandBufferCount = 1,
+      .pCommandBuffers = &commandBuffer,
+  };
+
+  EH(vkQueueSubmit(deviceQueue, 1, &submitInfo, VK_NULL_HANDLE));
+  EH(vkQueueWaitIdle(deviceQueue));
+
+  vkFreeCommandBuffers(device, cmdPool, 1, &commandBuffer);
+}

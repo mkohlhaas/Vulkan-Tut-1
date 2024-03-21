@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <vulkan/vulkan_core.h>
 
-static uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
+uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties) {
   VkPhysicalDeviceMemoryProperties memProperties;
   vkGetPhysicalDeviceMemoryProperties(physicalDevice, &memProperties);
 
@@ -47,51 +47,15 @@ void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyF
 }
 
 void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size) {
-  // allocate temp commmand buffer
-  VkCommandBufferAllocateInfo allocInfo = {
-      .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-      .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-      .commandPool = cmdPool,
-      .commandBufferCount = 1,
+  VkCommandBuffer tmpCmdBuffer = beginSingleTimeCommands();
+
+  // copy srcBuffer to dstBuffer
+  VkBufferCopy copyRegion = {
+      .size = size,
   };
+  vkCmdCopyBuffer(tmpCmdBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
 
-  VkCommandBuffer tmpCmdBuffer;
-  EH(vkAllocateCommandBuffers(device, &allocInfo, &tmpCmdBuffer));
-
-  // record copy command into temp command buffer
-  {
-    // begin command buffer
-    VkCommandBufferBeginInfo beginInfo = {
-        .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO,
-        .flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT,
-    };
-
-    EH(vkBeginCommandBuffer(tmpCmdBuffer, &beginInfo));
-
-    // copy src to dst
-    VkBufferCopy copyRegion = {
-        .size = size,
-    };
-    vkCmdCopyBuffer(tmpCmdBuffer, srcBuffer, dstBuffer, 1, &copyRegion);
-
-    // end command buffer
-    EH(vkEndCommandBuffer(tmpCmdBuffer));
-  }
-
-  // submit temp command buffer
-  VkSubmitInfo submitInfo = {
-      .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO,
-      .commandBufferCount = 1,
-      .pCommandBuffers = &tmpCmdBuffer,
-  };
-
-  EH(vkQueueSubmit(deviceQueue, 1, &submitInfo, VK_NULL_HANDLE));
-
-  // wait for copy operation to be finished
-  EH(vkQueueWaitIdle(deviceQueue));
-
-  // free temp command buffer
-  vkFreeCommandBuffers(device, cmdPool, 1, &tmpCmdBuffer);
+  endSingleTimeCommands(tmpCmdBuffer);
 }
 
 void destroyBuffer(VkBuffer buffer, VkDeviceMemory memory) {
