@@ -17,8 +17,12 @@ include_directories(${CGLM_INCLUDE_DIRS})
 link_directories(${CGLM_LIBRARY_DIRS})
 link_libraries(${CGLM_LIBRARIES})
 
+# stb - single-file public domain libraries for C/C++
+include_directories(${PROJECT_SOURCE_DIR}/3rdParty/stb)
+message(${PROJECT_SOURCE_DIR}/3rdParty/stb)
+
 # GLFW
-add_subdirectory(glfw)
+add_subdirectory(3rdParty/glfw)
 
 add_executable(${PROJECT_NAME} src/main.c
                                src/buffer.c
