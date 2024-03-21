@@ -3,6 +3,7 @@
 #include <vulkan/vulkan_core.h>
 
 extern VkPipeline pipeline;
+extern VkPipelineLayout pipelineLayout;
 
 // Creates graphics pipeline.
 void createPipeline();

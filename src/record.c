@@ -1,4 +1,5 @@
 #include "cmdBuffer.h"
+#include "descriptorSet.h"
 #include "error.h"
 #include "globals.h"
 #include "indexBuffer.h"
@@ -54,11 +55,18 @@ static void endRenderPass() { vkCmdEndRenderPass(cmdBuffers[currentFrame]); }
 static void endCmdBuffer() { EH(vkEndCommandBuffer(cmdBuffers[currentFrame])); }
 
 static void bindBuffers() {
+  // bind vertex buffer
   VkBuffer vertexBuffers[] = {vertexBuffer};
   uint32_t numBindings = sizeof(vertexBuffers) / sizeof(VkBuffer);
   VkDeviceSize offsets[] = {0};
   vkCmdBindVertexBuffers(cmdBuffers[currentFrame], 0, numBindings, vertexBuffers, offsets);
+
+  // bind index buffer
   vkCmdBindIndexBuffer(cmdBuffers[currentFrame], indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+
+  // bind uniform object buffer
+  vkCmdBindDescriptorSets(cmdBuffers[currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
+                          &descriptorSets[currentFrame], 0, nullptr);
 }
 
 void recordCmdBuffer(image_index_t imageIndex) {

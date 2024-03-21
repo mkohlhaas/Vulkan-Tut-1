@@ -1,3 +1,4 @@
+#include "descriptorSet.h"
 #include "device.h"
 #include "error.h"
 #include "renderpass.h"
@@ -8,7 +9,6 @@
 
 VkPipeline pipeline = VK_NULL_HANDLE;
 VkPipelineLayout pipelineLayout = VK_NULL_HANDLE;
-// VkDescriptorSetLayout descriptorSetLayout = VK_NULL_HANDLE;
 
 static char *vertexShaderFilename = "shaders/shader.vert.spv";
 static char *fragmentShaderFilename = "shaders/shader.frag.spv";
@@ -64,8 +64,11 @@ void createPipeline() {
                                                     fragmentPipelineShaderStageCreateInfo};
 
   // Pipeline Layout (uniform & push values)
+  VkDescriptorSetLayout descriptorSetLayouts[] = {descriptorSetLayout};
   VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
+      .setLayoutCount = sizeof(descriptorSetLayouts) / sizeof(VkDescriptorSetLayout),
+      .pSetLayouts = descriptorSetLayouts,
   };
 
   EH(vkCreatePipelineLayout(device, &pipelineLayoutCreateInfo, nullptr, &pipelineLayout));

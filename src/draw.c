@@ -5,6 +5,7 @@
 #include "record.h"
 #include "swapchain.h"
 #include "sync.h"
+#include "uniformBuffers.h"
 #include "window.h"
 #include <stdbool.h>
 #include <vulkan/vulkan.h>
@@ -89,6 +90,7 @@ void drawFrame() {
   if (!acquireNextImage()) {
     return;
   }
+  updateUniformBuffer(currentFrame);
   resetFence();
   recCmdBuffer();
   submitQueue();

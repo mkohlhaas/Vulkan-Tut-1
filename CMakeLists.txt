@@ -23,6 +23,7 @@ add_subdirectory(glfw)
 add_executable(${PROJECT_NAME} src/main.c
                                src/buffer.c
                                src/cmdBuffer.c
+                               src/descriptorSet.c
                                src/device.c
                                src/draw.c
                                src/error.c
@@ -36,6 +37,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/surface.c
                                src/swapchain.c
                                src/sync.c
+                               src/uniformBuffers.c
                                src/vertexBuffer.c
                                src/vulkan.c
                                src/window.c)
