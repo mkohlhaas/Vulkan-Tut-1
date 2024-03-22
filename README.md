@@ -41,3 +41,15 @@ git config --list --local                            # check settings
   - A fence is for ordering the execution on the *CPU*. If the host needs to know when the GPU has finished something, we use a fence.
   - Fences are used to keep the CPU and GPU in sync with each-other.
 - [Vulkan Memory Allocator](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
+- [c-api for imgui](https://github.com/cimgui/cimgui)
+- [Unveiling the Power of Anonymous Functions in C](https://medium.com/@future_fanatic/unveiling-the-power-of-anonymous-functions-in-c-a-guide-to-cleaner-code-4ffc76b2ce07)
+- [Deletion queue](https://vkguide.dev/docs/chapter-2/cleanup/)
+- Dynamic Rendering:
+  - [VK_KHR_dynamic_rendering tutorial](https://lesleylai.info/en/vk-khr-dynamic-rendering/)
+  - [Vulkan dynamic rendering](https://quadbit.medium.com/vulkan-dynamic-rendering-f993a9a8ca58)
+  - [Vulkan Dynamic Rendering](https://www.ultraengine.com/community/blogs/entry/2743-vulkan-dynamic-rendering/)
+- [Frame profiler](https://github.com/wolfpld/tracy)
+- [Simple stupid SVG parser](https://github.com/memononen/nanosvg)
+- [YT: Common Mistakes When Learning Vulkan](https://www.youtube.com/watch?v=0OqJtPnkfC8&t=17s&pp=ygUWY29tbW9uIG1pc3Rha2VzIHZ1bGthbg%3D%3D)
+- [YT: Using Vulkan Configurator for Daily Vulkan development](https://www.youtube.com/watch?v=T0oN_H2avnI&pp=ygUZdXNpbmcgdnVsa2FuIGNvbmZpZ3VyYXRvcg%3D%3D)
+- [YT: Using Vulkan Validation Effectively](https://www.youtube.com/watch?v=FA-3tmKT9TE&pp=ygUXdXNpbmcgdnVsa2FuIHZhbGlkYXRpb24%3D)
