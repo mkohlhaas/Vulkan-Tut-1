@@ -23,11 +23,11 @@ void initVulkan() {
   createDevice();
   createRenderPass();
   createUniformBuffers();
+  createCmdBuffers();
+  loadAssets();
   createDescriptorSets();
   createPipeline();
   createSwapchain();
-  createCmdBuffers();
-  loadAssets();
   createVertexBuffer();
   createIndexBuffer();
   createSyncObjects();
@@ -39,11 +39,11 @@ void closeVulkan() {
   // device related objects
   destroySyncObjects();
   destroyDescriptorSet();
+  unloadAssets();
+  destroyCmdBuffers();
   destroyUniformBuffers();
   destroyIndexBuffer();
   destroyVertexBuffer();
-  unloadAssets();
-  destroyCmdBuffers();
   destroySwapchain();
   destroyPipeline();
   destroyRenderPass();

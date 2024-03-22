@@ -12,8 +12,9 @@ enum { numTextures = sizeof(textureFiles) / sizeof(char *) };
 
 static VkImage textureImage[numTextures];
 static VkDeviceMemory textureImageMemory[numTextures];
-static VkImageView textureImageView[numTextures];
-static VkSampler textureSampler;
+
+VkImageView textureImageView[numTextures];
+VkSampler textureSampler;
 
 static void loadTextures() {
   for (int i = 0; i < numTextures; i++) {
