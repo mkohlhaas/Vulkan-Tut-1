@@ -3,7 +3,7 @@
 #include "device.h"
 #include "indexBuffer.h"
 #include "instance.h"
-#include "loadAssets.h"
+#include "assets.h"
 #include "physical.h"
 #include "pipeline.h"
 #include "renderpass.h"

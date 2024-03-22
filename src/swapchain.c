@@ -3,6 +3,7 @@
 #include "physical.h"
 #include "renderpass.h"
 #include "surface.h"
+#include "texture.h"
 #include "window.h"
 #include <GLFW/glfw3.h>
 #include <stdint.h>
@@ -64,8 +65,7 @@ static void createSwapchainImageViews() {
         .format = swapchainImageFormat,
         .subresourceRange = {VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1},
     };
-    EH(vkCreateImageView(device, &createInfo, nullptr, &view));
-    swapchainImageViews[i] = view;
+    createImageView(swapchainImages[i], swapchainImageFormat, VK_IMAGE_ASPECT_COLOR_BIT, &swapchainImageViews[i]);
   }
 }
 

@@ -2,6 +2,7 @@
 #include "cmdBuffer.h"
 #include "device.h"
 #include "error.h"
+#include "physical.h"
 #include "stb_image.h"
 #include <string.h>
 #include <vulkan/vulkan_core.h>
@@ -99,8 +100,23 @@ static void copyBufferToImage(VkBuffer buffer, VkImage image, uint32_t width, ui
   endSingleTimeCommands(commandBuffer);
 }
 
+// TODO: separate file ?
+void createImageView(VkImage image, VkFormat format, VkImageAspectFlags aspectFlags, VkImageView *imageView) {
+  VkImageViewCreateInfo viewInfo = {.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+                                    .viewType = VK_IMAGE_VIEW_TYPE_2D,
+                                    .image = image,
+                                    .format = format,
+                                    .subresourceRange = {aspectFlags, 0, 1, 0, 1}};
+
+  EH(vkCreateImageView(device, &viewInfo, nullptr, imageView));
+}
+
+static void createTextureImageView(VkImage image, VkImageView *imageView) {
+  createImageView(image, VK_FORMAT_R8G8B8A8_SRGB, VK_IMAGE_ASPECT_COLOR_BIT, imageView);
+}
+
 // file system → staging buffer (CPU/RAM) → image memory (GPU/VRAM)
-void createTextureImage(const char *fileName, VkImage *image, VkDeviceMemory *imageMemory) {
+void createTextureImage(const char *fileName, VkImage *image, VkImageView *imageView, VkDeviceMemory *imageMemory) {
   // load image file
   int width, height, _channels;
   stbi_uc *pixels = stbi_load(fileName, &width, &height, &_channels, STBI_rgb_alpha);
@@ -145,12 +161,40 @@ void createTextureImage(const char *fileName, VkImage *image, VkDeviceMemory *im
   newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
   transitionImageLayout(*image, VK_FORMAT_R8G8B8A8_SRGB, oldLayout, newLayout);
 
+  createTextureImageView(*image, imageView);
+
   // cleanup stb image file and staging buffer
   stbi_image_free(pixels);
   destroyBuffer(stagingBuffer, stagingBufferMemory);
 }
 
-void destroyTextureImage(VkImage image, VkDeviceMemory imageMemory) {
+void destroyTextureImage(VkImage image, VkImageView imageView, VkDeviceMemory imageMemory) {
+  vkDestroyImageView(device, imageView, nullptr);
   vkDestroyImage(device, image, nullptr);
   vkFreeMemory(device, imageMemory, nullptr);
 }
+
+void createTextureSampler(VkSampler *sampler) {
+  VkPhysicalDeviceProperties properties = {};
+  vkGetPhysicalDeviceProperties(physicalDevice, &properties);
+
+  VkSamplerCreateInfo samplerInfo = {
+      .sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO,
+      .magFilter = VK_FILTER_LINEAR,
+      .minFilter = VK_FILTER_LINEAR,
+      .addressModeU = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+      .addressModeV = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+      .addressModeW = VK_SAMPLER_ADDRESS_MODE_REPEAT,
+      .anisotropyEnable = VK_TRUE,
+      .maxAnisotropy = properties.limits.maxSamplerAnisotropy,
+      .borderColor = VK_BORDER_COLOR_INT_OPAQUE_BLACK,
+      .unnormalizedCoordinates = VK_FALSE,
+      .compareEnable = VK_FALSE,
+      .compareOp = VK_COMPARE_OP_ALWAYS,
+      .mipmapMode = VK_SAMPLER_MIPMAP_MODE_LINEAR,
+  };
+
+  EH(vkCreateSampler(device, &samplerInfo, nullptr, sampler));
+}
+
+void destroyTextureSampler(VkSampler sampler) { vkDestroySampler(device, sampler, NULL); }

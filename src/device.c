@@ -16,12 +16,17 @@ void createDevice() {
 
   const char *const enabledExtensionNames = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
 
+  VkPhysicalDeviceFeatures deviceFeatures = {
+      deviceFeatures.samplerAnisotropy = VK_TRUE,
+  };
+
   VkDeviceCreateInfo createInfo = {
       .sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
       .queueCreateInfoCount = 1,
       .pQueueCreateInfos = &deviceQueueCreateInfo,
       .enabledExtensionCount = 1,
       .ppEnabledExtensionNames = &enabledExtensionNames,
+      .pEnabledFeatures = &deviceFeatures,
   };
   EH(vkCreateDevice(physicalDevice, &createInfo, nullptr, &device));
 

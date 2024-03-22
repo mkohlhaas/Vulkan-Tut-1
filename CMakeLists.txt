@@ -25,6 +25,7 @@ add_subdirectory(lib/stb)
 add_subdirectory(3rdParty/glfw)
 
 add_executable(${PROJECT_NAME} src/main.c
+                               src/assets.c
                                src/buffer.c
                                src/cmdBuffer.c
                                src/descriptorSet.c
@@ -34,7 +35,6 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/globals.c
                                src/indexBuffer.c
                                src/instance.c
-                               src/loadAssets.c
                                src/physical.c
                                src/pipeline.c
                                src/record.c
