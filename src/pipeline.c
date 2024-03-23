@@ -79,6 +79,13 @@ void createPipeline() {
       .rasterizationSamples = VK_SAMPLE_COUNT_1_BIT,
   };
 
+  VkPipelineDepthStencilStateCreateInfo depthStencil = {
+      .sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO,
+      .depthTestEnable = VK_TRUE,
+      .depthWriteEnable = VK_TRUE,
+      .depthCompareOp = VK_COMPARE_OP_LESS,
+  };
+
   // Vertex Input
   VkVertexInputBindingDescription bindingDescriptions[] = {{
       .binding = 0,
@@ -88,7 +95,7 @@ void createPipeline() {
   VkVertexInputAttributeDescription attributeDescriptions[] = {{
                                                                    .binding = 0,
                                                                    .location = 0,
-                                                                   .format = VK_FORMAT_R32G32_SFLOAT,
+                                                                   .format = VK_FORMAT_R32G32B32_SFLOAT,
                                                                    .offset = offsetof(Vertex, pos),
                                                                },
                                                                {
@@ -172,6 +179,7 @@ void createPipeline() {
       .pViewportState = &viewportState,
       .pRasterizationState = &rasterizationState,
       .pMultisampleState = &multisampling,
+      .pDepthStencilState = &depthStencil,
       .pColorBlendState = &colorBlendState,
       .pDynamicState = &viewportDynamicState,
       .layout = pipelineLayout,

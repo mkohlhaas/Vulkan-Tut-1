@@ -38,10 +38,10 @@ void updateUniformBuffer(uint32_t currentFrame) {
   glm_rotate(model, elapsedTime * glm_rad(90.0f / 2.0f), v1);
 
   // view matrix
-  vec3 v2 = {2.0f, 2.0f, 2.0f};
+  mat4 view;
+  vec3 v2 = {1.5f, 1.5f, 1.5f};
   vec3 v3 = {0.0f, 0.0f, 0.0f};
   vec3 v4 = {0.0f, 0.0f, 1.0f};
-  mat4 view;
   glm_lookat(v2, v3, v4, (vec4 *)&view);
 
   // projection matrix
@@ -54,7 +54,6 @@ void updateUniformBuffer(uint32_t currentFrame) {
 
   // uniform buffer object
   UniformBufferObject ubo;
-
   glm_mat4_copy(model, ubo.model);
   glm_mat4_copy(view, ubo.view);
   glm_mat4_copy(proj, ubo.proj);

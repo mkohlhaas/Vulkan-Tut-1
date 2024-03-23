@@ -22,7 +22,10 @@ static void beginCmdBuffer() {
 static void beginRenderPass(image_index_t imageIndex) {
   // renderPass → colorAttachmentDescription → loadOp
   const VkClearColorValue colorClearValue = {0.03f, 0.03f, 0.03f, 1.0f};
-  const VkClearValue clearValues[] = {colorClearValue};
+  const VkClearValue clearValues[] = {
+      {.color = {{0.02f, 0.02f, 0.02f, 1.0f}}},
+      {.depthStencil = {1.0f, 0}},
+  };
 
   VkRenderPassBeginInfo renderPassBeginInfo = {
       .sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,

@@ -10,7 +10,7 @@ typedef uint32_t image_index_t;
 typedef uint16_t vertex_index_t;
 
 typedef struct {
-  vec2 pos;
+  vec3 pos;
   vec3 color;
   vec2 texCoord;
 } Vertex;

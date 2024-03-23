@@ -1,9 +1,10 @@
+#include "assets.h"
 #include "cmdBuffer.h"
+#include "depthBuffer.h"
 #include "descriptorSet.h"
 #include "device.h"
 #include "indexBuffer.h"
 #include "instance.h"
-#include "assets.h"
 #include "physical.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -21,13 +22,15 @@ void initVulkan() {
 #endif
   pickPhysicalDevice();
   createDevice();
+  createSwapchain();
+  createDepthImage();
   createRenderPass();
+  createFramebuffers();
   createUniformBuffers();
   createCmdBuffers();
   loadAssets();
   createDescriptorSets();
   createPipeline();
-  createSwapchain();
   createVertexBuffer();
   createIndexBuffer();
   createSyncObjects();
@@ -44,6 +47,7 @@ void closeVulkan() {
   destroyUniformBuffers();
   destroyIndexBuffer();
   destroyVertexBuffer();
+  destroyDepthImage();
   destroySwapchain();
   destroyPipeline();
   destroyRenderPass();

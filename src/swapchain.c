@@ -1,3 +1,4 @@
+#include "depthBuffer.h"
 #include "device.h"
 #include "error.h"
 #include "physical.h"
@@ -19,7 +20,7 @@ VkImage *swapchainImages = nullptr;
 VkImageView *swapchainImageViews = nullptr;
 VkFramebuffer *framebuffers = nullptr;
 
-static void createFramebuffers() {
+void createFramebuffers() {
   free(framebuffers);
   framebuffers = malloc(sizeof(VkFramebuffer) * swapchainImagesCount);
   if (!framebuffers) {
@@ -28,11 +29,12 @@ static void createFramebuffers() {
 
   // TODO: is loop really necessary or can we just set `attachmentCount` ?
   for (int i = 0; i < swapchainImagesCount; i++) {
+    VkImageView attachments[] = {swapchainImageViews[i], depthImageView};
     VkFramebufferCreateInfo framebufferCreateInfo = {
         .sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
         .renderPass = renderPass,
-        .attachmentCount = 1,
-        .pAttachments = &swapchainImageViews[i],
+        .attachmentCount = sizeof(attachments) / sizeof(VkImageView),
+        .pAttachments = attachments,
         .width = swapchainExtent.width,
         .height = swapchainExtent.height,
         .layers = 1,
@@ -106,8 +108,6 @@ void createSwapchain() {
   EH(vkGetSwapchainImagesKHR(device, swapchain, &swapchainImagesCount, swapchainImages));
 
   createSwapchainImageViews();
-
-  createFramebuffers();
 }
 
 void destroySwapchain() {
@@ -118,6 +118,11 @@ void destroySwapchain() {
   }
 
   vkDestroySwapchainKHR(device, swapchain, nullptr);
+}
+
+static void createSwapchainAnew() {
+  destroySwapchain();
+  createSwapchain();
 }
 
 void recreateSwapchain() {
@@ -132,6 +137,7 @@ void recreateSwapchain() {
 
   deviceWaitIdle();
 
-  destroySwapchain();
-  createSwapchain();
+  createSwapchainAnew();
+  recreateDepthImage();
+  createFramebuffers();
 }
