@@ -21,6 +21,10 @@ link_libraries(${CGLM_LIBRARIES})
 include_directories(${PROJECT_SOURCE_DIR}/3rdParty/stb)
 add_subdirectory(lib/stb)
 
+# tinyobjloader-c
+include_directories(${PROJECT_SOURCE_DIR}/3rdParty/tinyobjloader-c)
+add_subdirectory(lib/tinyobjloader-c)
+
 # GLFW
 add_subdirectory(3rdParty/glfw)
 
@@ -50,7 +54,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/vulkan.c
                                src/window.c)
 
-target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan stb)
+target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan stb tinyobjloader-c)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)
 
