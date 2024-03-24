@@ -42,6 +42,7 @@ git config --list --local                            # check settings
   - Fences are used to keep the CPU and GPU in sync with each-other.
 - [Vulkan Memory Allocator](https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator)
 - [c-api for imgui](https://github.com/cimgui/cimgui)
+  - [Vulkan Tutorial #031 [Deutsch] Einrichtung von ImGui](https://www.youtube.com/watch?v=PmVAwbboAfI&list=PLStQc0GqppuXgs6do23v_HKRrR32gJMm3&index=32&pp=iAQB)
 - [Unveiling the Power of Anonymous Functions in C](https://medium.com/@future_fanatic/unveiling-the-power-of-anonymous-functions-in-c-a-guide-to-cleaner-code-4ffc76b2ce07)
 - [Deletion queue](https://vkguide.dev/docs/chapter-2/cleanup/)
 - Dynamic Rendering:
