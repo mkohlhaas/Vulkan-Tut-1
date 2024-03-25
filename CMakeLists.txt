@@ -29,7 +29,6 @@ add_subdirectory(lib/tinyobjloader-c)
 add_subdirectory(3rdParty/glfw)
 
 add_executable(${PROJECT_NAME} src/main.c
-                               src/assets.c
                                src/buffer.c
                                src/cmdBuffer.c
                                src/depthBuffer.c
@@ -41,6 +40,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/image.c
                                src/indexBuffer.c
                                src/instance.c
+                               src/mesh.c
                                src/physical.c
                                src/pipeline.c
                                src/record.c

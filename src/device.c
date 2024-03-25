@@ -17,7 +17,8 @@ void createDevice() {
   const char *const enabledExtensionNames = VK_KHR_SWAPCHAIN_EXTENSION_NAME;
 
   VkPhysicalDeviceFeatures deviceFeatures = {
-      deviceFeatures.samplerAnisotropy = VK_TRUE,
+      .samplerAnisotropy = VK_TRUE,
+      .fillModeNonSolid = VK_TRUE,
   };
 
   VkDeviceCreateInfo createInfo = {
@@ -33,8 +34,6 @@ void createDevice() {
   vkGetDeviceQueue(device, getQueueFamilyIndex(), 0, &deviceQueue);
 }
 
-void deviceWaitIdle() {
-  EH(vkDeviceWaitIdle(device));
-}
+void deviceWaitIdle() { EH(vkDeviceWaitIdle(device)); }
 
 void destroyDevice() { vkDestroyDevice(device, nullptr); }

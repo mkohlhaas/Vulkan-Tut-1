@@ -3,6 +3,7 @@
 #include "error.h"
 #include "globals.h"
 #include "indexBuffer.h"
+#include "mesh.h"
 #include "pipeline.h"
 #include "renderpass.h"
 #include "swapchain.h"
@@ -65,7 +66,7 @@ static void bindBuffers() {
   vkCmdBindVertexBuffers(cmdBuffers[currentFrame], 0, numBindings, vertexBuffers, offsets);
 
   // bind index buffer
-  vkCmdBindIndexBuffer(cmdBuffers[currentFrame], indexBuffer, 0, VK_INDEX_TYPE_UINT16);
+  vkCmdBindIndexBuffer(cmdBuffers[currentFrame], indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
   // bind uniform object buffer
   vkCmdBindDescriptorSets(cmdBuffers[currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,

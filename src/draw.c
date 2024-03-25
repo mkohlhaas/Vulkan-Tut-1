@@ -82,7 +82,7 @@ static void presentQueue() {
   }
 }
 
-void updateFrameCounter() { currentFrame = (currentFrame + 1) % MAX_FRAMES_IN_FLIGHT; }
+void updateFrameCounter() { currentFrame = (currentFrame + 1) % FRAMES_IN_FLIGHT; }
 
 void drawFrame() {
   waitForInFlightFence();

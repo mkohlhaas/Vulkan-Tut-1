@@ -2,6 +2,7 @@
 #include "device.h"
 #include "error.h"
 #include "globals.h"
+#include "mesh.h"
 #include "types.h"
 #include <string.h>
 #include <vulkan/vulkan_core.h>

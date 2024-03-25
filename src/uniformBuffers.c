@@ -11,9 +11,9 @@
 #include <string.h>
 #include <vulkan/vulkan.h>
 
-VkBuffer uniformBuffers[MAX_FRAMES_IN_FLIGHT];
-VkDeviceMemory uniformBuffersMemory[MAX_FRAMES_IN_FLIGHT];
-void *uniformBuffersMapped[MAX_FRAMES_IN_FLIGHT];
+VkBuffer uniformBuffers[FRAMES_IN_FLIGHT];
+VkDeviceMemory uniformBuffersMemory[FRAMES_IN_FLIGHT];
+void *uniformBuffersMapped[FRAMES_IN_FLIGHT];
 
 void createUniformBuffers() {
   VkDeviceSize bufferSize = sizeof(UniformBufferObject);
@@ -21,7 +21,7 @@ void createUniformBuffers() {
   VkBufferUsageFlags usages = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
   VkMemoryPropertyFlags props = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
 
-  for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+  for (size_t i = 0; i < FRAMES_IN_FLIGHT; i++) {
     createBuffer(bufferSize, usages, props, &uniformBuffers[i], &uniformBuffersMemory[i]);
     EH(vkMapMemory(device, uniformBuffersMemory[i], 0, bufferSize, 0, &uniformBuffersMapped[i]));
   }
@@ -47,6 +47,7 @@ void updateUniformBuffer(uint32_t currentFrame) {
   // projection matrix
   mat4 proj;
   glm_perspective(glm_rad(45.0f), (float)swapchainExtent.width / swapchainExtent.height, 0.1f, 10.0f, (vec4 *)&proj);
+  proj[1][1] = -proj[1][1];
 
   glm_mat4_print(model, stderr);
   glm_mat4_print(view, stderr);
@@ -62,7 +63,7 @@ void updateUniformBuffer(uint32_t currentFrame) {
 }
 
 void destroyUniformBuffers() {
-  for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+  for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
     destroyBuffer(uniformBuffers[i], uniformBuffersMemory[i]);
   }
 }

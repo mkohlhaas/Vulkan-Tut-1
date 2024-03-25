@@ -1,10 +1,10 @@
-#include "assets.h"
 #include "cmdBuffer.h"
 #include "depthBuffer.h"
 #include "descriptorSet.h"
 #include "device.h"
 #include "indexBuffer.h"
 #include "instance.h"
+#include "mesh.h"
 #include "physical.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -14,7 +14,10 @@
 #include "uniformBuffers.h"
 #include "vertexBuffer.h"
 
+const char *modelFile = "assets/models/monkey.obj";
+
 void initVulkan() {
+  loadMesh(modelFile);
   createInstance();
   createSurface();
 #ifndef NDEBUG
@@ -28,7 +31,6 @@ void initVulkan() {
   createFramebuffers();
   createUniformBuffers();
   createCmdBuffers();
-  loadAssets();
   createDescriptorSets();
   createPipeline();
   createVertexBuffer();
@@ -42,7 +44,6 @@ void closeVulkan() {
   // device related objects
   destroySyncObjects();
   destroyDescriptorSet();
-  unloadAssets();
   destroyCmdBuffers();
   destroyUniformBuffers();
   destroyIndexBuffer();

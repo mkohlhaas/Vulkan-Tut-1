@@ -6,14 +6,14 @@
 #include <vulkan/vulkan_core.h>
 
 VkCommandPool cmdPool;
-VkCommandBuffer cmdBuffers[MAX_FRAMES_IN_FLIGHT];
+VkCommandBuffer cmdBuffers[FRAMES_IN_FLIGHT];
 
 static void allocateCommandBuffers() {
   VkCommandBufferAllocateInfo allocateInfo = {
       .sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
       .commandPool = cmdPool,
       .level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
-      .commandBufferCount = MAX_FRAMES_IN_FLIGHT,
+      .commandBufferCount = FRAMES_IN_FLIGHT,
   };
   EH(vkAllocateCommandBuffers(device, &allocateInfo, cmdBuffers));
 }

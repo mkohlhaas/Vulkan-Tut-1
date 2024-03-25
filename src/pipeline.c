@@ -92,25 +92,14 @@ void createPipeline() {
       .inputRate = VK_VERTEX_INPUT_RATE_VERTEX,
       .stride = sizeof(Vertex),
   }};
-  VkVertexInputAttributeDescription attributeDescriptions[] = {{
-                                                                   .binding = 0,
-                                                                   .location = 0,
-                                                                   .format = VK_FORMAT_R32G32B32_SFLOAT,
-                                                                   .offset = offsetof(Vertex, pos),
-                                                               },
-                                                               {
-
-                                                                   .binding = 0,
-                                                                   .location = 1,
-                                                                   .format = VK_FORMAT_R32G32B32_SFLOAT,
-                                                                   .offset = offsetof(Vertex, color),
-                                                               },
-                                                               {
-                                                                   .binding = 0,
-                                                                   .location = 2,
-                                                                   .format = VK_FORMAT_R32G32_SFLOAT,
-                                                                   .offset = offsetof(Vertex, texCoord),
-                                                               }};
+  VkVertexInputAttributeDescription attributeDescriptions[] = {
+      {
+          .binding = 0,
+          .location = 0,
+          .format = VK_FORMAT_R32G32B32_SFLOAT,
+          .offset = offsetof(Vertex, pos),
+      },
+  };
 
   VkPipelineVertexInputStateCreateInfo vertexInput = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
@@ -144,8 +133,8 @@ void createPipeline() {
   // Rasterizer
   VkPipelineRasterizationStateCreateInfo rasterizationState = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
-      .polygonMode = VK_POLYGON_MODE_FILL,
-      .cullMode = VK_CULL_MODE_BACK_BIT,
+      .polygonMode = VK_POLYGON_MODE_LINE,
+      .cullMode = VK_CULL_MODE_NONE,
       .frontFace = VK_FRONT_FACE_CLOCKWISE,
       .lineWidth = 1.0f,
   };

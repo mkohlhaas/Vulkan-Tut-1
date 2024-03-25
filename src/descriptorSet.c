@@ -1,12 +1,12 @@
-#include "assets.h"
 #include "device.h"
 #include "error.h"
 #include "globals.h"
+#include "types.h"
 #include "uniformBuffers.h"
 #include <vulkan/vulkan.h>
 
 VkDescriptorSetLayout descriptorSetLayout;
-VkDescriptorSet descriptorSets[MAX_FRAMES_IN_FLIGHT];
+VkDescriptorSet descriptorSets[FRAMES_IN_FLIGHT];
 
 static VkDescriptorPool descriptorPool;
 
@@ -18,18 +18,18 @@ void destroyDescriptorSet() {
 static void createDescriptorPool() {
   VkDescriptorPoolSize poolSize[] = {{
                                          .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-                                         .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+                                         .descriptorCount = FRAMES_IN_FLIGHT,
                                      },
                                      {
                                          .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-                                         .descriptorCount = MAX_FRAMES_IN_FLIGHT,
+                                         .descriptorCount = FRAMES_IN_FLIGHT,
                                      }};
 
   VkDescriptorPoolCreateInfo poolInfo = {
       .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
       .poolSizeCount = sizeof(poolSize) / sizeof(VkDescriptorPoolSize),
       .pPoolSizes = poolSize,
-      .maxSets = MAX_FRAMES_IN_FLIGHT,
+      .maxSets = FRAMES_IN_FLIGHT,
   };
 
   EH(vkCreateDescriptorPool(device, &poolInfo, nullptr, &descriptorPool))
@@ -70,18 +70,18 @@ void createDescriptorSets() {
   createDescriptorPool();
 
   // allocate descriptor sets
-  VkDescriptorSetLayout layouts[MAX_FRAMES_IN_FLIGHT] = {descriptorSetLayout, descriptorSetLayout};
+  VkDescriptorSetLayout layouts[FRAMES_IN_FLIGHT] = {descriptorSetLayout, descriptorSetLayout};
   VkDescriptorSetAllocateInfo allocInfo = {
       .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_ALLOCATE_INFO,
       .descriptorPool = descriptorPool,
-      .descriptorSetCount = MAX_FRAMES_IN_FLIGHT,
+      .descriptorSetCount = FRAMES_IN_FLIGHT,
       .pSetLayouts = layouts,
   };
 
   EH(vkAllocateDescriptorSets(device, &allocInfo, descriptorSets));
 
   // connect/docking uniform buffer to descriptor sets
-  for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; i++) {
+  for (int i = 0; i < FRAMES_IN_FLIGHT; i++) {
     // make the connection
     VkDescriptorBufferInfo bufferInfo = {
         .buffer = uniformBuffers[i],
@@ -89,35 +89,20 @@ void createDescriptorSets() {
         .range = sizeof(UniformBufferObject),
     };
 
-    // TODO: uses only first texture image view
-    // descriptorSets should be a 2-dimensional array → use GLIB2 library (e.g. array of arrays)
-    VkDescriptorImageInfo imageInfo = {
-        .imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-        .imageView = textureImageView[0],
-        .sampler = textureSampler,
+    // update descriptor sets
+    VkWriteDescriptorSet descriptorWrites[] = {
+        {
+            .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
+            .dstSet = descriptorSets[i],
+            .dstBinding = 0,
+            .dstArrayElement = 0,
+            .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+            .descriptorCount = 1,
+            .pBufferInfo = &bufferInfo,
+        },
     };
 
-    // update descriptor sets
-    VkWriteDescriptorSet descriptorWrites[] = {{
-                                                   .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-                                                   .dstSet = descriptorSets[i],
-                                                   .dstBinding = 0,
-                                                   .dstArrayElement = 0,
-                                                   .descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-                                                   .descriptorCount = 1,
-                                                   .pBufferInfo = &bufferInfo,
-                                               },
-                                               {
-                                                   .sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET,
-                                                   .dstSet = descriptorSets[i],
-                                                   .dstBinding = 1,
-                                                   .dstArrayElement = 0,
-                                                   .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-                                                   .descriptorCount = 1,
-                                                   .pImageInfo = &imageInfo,
-                                               }};
-
-    uint32_t numDescriptorWrites = sizeof(descriptorWrites) / sizeof(VkWriteDescriptorSet);
+    const uint32_t numDescriptorWrites = sizeof(descriptorWrites) / sizeof(VkWriteDescriptorSet);
     vkUpdateDescriptorSets(device, numDescriptorWrites, descriptorWrites, 0, nullptr);
   }
 }
