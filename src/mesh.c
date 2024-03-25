@@ -11,8 +11,6 @@
 
 Vertex *vertices;
 size_t numVertices;
-vertex_index_t *indices;
-size_t numIndices;
 
 static char *mmap_file(const char *filename, size_t *len) {
   {
@@ -91,32 +89,34 @@ bool loadMesh(const char *filename) {
   }
 
   {
-    numVertices = attrib.num_vertices;
+
+    numVertices = attrib.num_faces;
     dbgPrint("Number of vertices: %zu\n", numVertices);
     dbgPrint("Number of faces: %u\n", attrib.num_faces);
     dbgPrint("Number of faces num verts: %u\n", attrib.num_face_num_verts);
     dbgPrint("Number of normals: %u\n", attrib.num_normals);
+
+    if (!attrib.num_normals) {
+      logExit("Object does not contain normals information. Please do a proper export!");
+    }
 
     vertices = malloc(numVertices * sizeof(Vertex));
     if (!vertices) {
       logExit("Not enough memory");
     }
 
-    // vertices
-    for (int i = 0; i < numVertices; i++) {
-      vertices[i].pos[0] = attrib.vertices[i * 3 + 0];
-      vertices[i].pos[2] = attrib.vertices[i * 3 + 1];
-      vertices[i].pos[1] = attrib.vertices[i * 3 + 2];
-      dbgPrint("Normal: %f\n", attrib.normals[i + 0]);
-      dbgPrint("Normal: %f\n", attrib.normals[i + 1]);
-      dbgPrint("Normal: %f\n", attrib.normals[i + 2]);
-    }
-
-    // indices
-    numIndices = attrib.num_faces;
-    indices = malloc(numIndices * sizeof(vertex_index_t));
-    for (int i = 0; i < numIndices; i++) {
-      indices[i] = attrib.faces[i].v_idx;
+    // normals
+    for (int i = 0; i < attrib.num_faces; i++) {
+      dbgPrint("Index: %d\n", attrib.faces[i].v_idx);
+      vertices[i].pos[0] = *(attrib.vertices + 3 * attrib.faces[i].v_idx + 0);
+      vertices[i].pos[2] = *(attrib.vertices + 3 * attrib.faces[i].v_idx + 1);
+      vertices[i].pos[1] = *(attrib.vertices + 3 * attrib.faces[i].v_idx + 2);
+      vertices[i].normal[0] = *(attrib.normals + 3 * attrib.faces[i].vn_idx + 0);
+      vertices[i].normal[2] = *(attrib.normals + 3 * attrib.faces[i].vn_idx + 1);
+      vertices[i].normal[1] = *(attrib.normals + 3 * attrib.faces[i].vn_idx + 2);
+      dbgPrint("vertex %4d normal x: %f\n", i, vertices[i].normal[0]);
+      dbgPrint("            normal y: %f\n", vertices[i].normal[2]);
+      dbgPrint("            normal z: %f\n", vertices[i].normal[1]);
     }
   }
 

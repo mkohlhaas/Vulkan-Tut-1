@@ -99,6 +99,12 @@ void createPipeline() {
           .format = VK_FORMAT_R32G32B32_SFLOAT,
           .offset = offsetof(Vertex, pos),
       },
+      {
+          .binding = 0,
+          .location = 1,
+          .format = VK_FORMAT_R32G32B32_SFLOAT,
+          .offset = offsetof(Vertex, normal),
+      },
   };
 
   VkPipelineVertexInputStateCreateInfo vertexInput = {
@@ -133,7 +139,7 @@ void createPipeline() {
   // Rasterizer
   VkPipelineRasterizationStateCreateInfo rasterizationState = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
-      .polygonMode = VK_POLYGON_MODE_LINE,
+      .polygonMode = VK_POLYGON_MODE_FILL ,
       .cullMode = VK_CULL_MODE_NONE,
       .frontFace = VK_FRONT_FACE_CLOCKWISE,
       .lineWidth = 1.0f,

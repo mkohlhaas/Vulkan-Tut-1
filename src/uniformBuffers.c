@@ -39,7 +39,7 @@ void updateUniformBuffer(uint32_t currentFrame) {
 
   // view matrix
   mat4 view;
-  vec3 v2 = {1.5f, 1.5f, 1.5f};
+  vec3 v2 = {2.5f, 2.5f, 2.5f};
   vec3 v3 = {0.0f, 0.0f, 0.0f};
   vec3 v4 = {0.0f, 0.0f, 1.0f};
   glm_lookat(v2, v3, v4, (vec4 *)&view);

@@ -38,7 +38,6 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/error.c
                                src/globals.c
                                src/image.c
-                               src/indexBuffer.c
                                src/instance.c
                                src/mesh.c
                                src/physical.c

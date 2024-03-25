@@ -2,7 +2,6 @@
 #include "descriptorSet.h"
 #include "error.h"
 #include "globals.h"
-#include "indexBuffer.h"
 #include "mesh.h"
 #include "pipeline.h"
 #include "renderpass.h"
@@ -52,7 +51,9 @@ static void setScissor() {
   vkCmdSetScissor(cmdBuffers[currentFrame], 0, 1, &scissor);
 }
 
-static void draw() { vkCmdDrawIndexed(cmdBuffers[currentFrame], numIndices, 1, 0, 0, 0); }
+// static void draw() { vkCmdDrawIndexed(cmdBuffers[currentFrame], numIndices, 1, 0, 0, 0); }
+
+static void draw() { vkCmdDraw(cmdBuffers[currentFrame], numVertices, 1, 0, 0); }
 
 static void endRenderPass() { vkCmdEndRenderPass(cmdBuffers[currentFrame]); }
 
@@ -64,9 +65,6 @@ static void bindBuffers() {
   uint32_t numBindings = sizeof(vertexBuffers) / sizeof(VkBuffer);
   VkDeviceSize offsets[] = {0};
   vkCmdBindVertexBuffers(cmdBuffers[currentFrame], 0, numBindings, vertexBuffers, offsets);
-
-  // bind index buffer
-  vkCmdBindIndexBuffer(cmdBuffers[currentFrame], indexBuffer, 0, VK_INDEX_TYPE_UINT32);
 
   // bind uniform object buffer
   vkCmdBindDescriptorSets(cmdBuffers[currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,

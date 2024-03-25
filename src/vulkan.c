@@ -2,7 +2,6 @@
 #include "depthBuffer.h"
 #include "descriptorSet.h"
 #include "device.h"
-#include "indexBuffer.h"
 #include "instance.h"
 #include "mesh.h"
 #include "physical.h"
@@ -14,7 +13,7 @@
 #include "uniformBuffers.h"
 #include "vertexBuffer.h"
 
-const char *modelFile = "assets/models/monkey.obj";
+const char *modelFile = "assets/models/gourd.obj";
 
 void initVulkan() {
   loadMesh(modelFile);
@@ -34,7 +33,6 @@ void initVulkan() {
   createDescriptorSets();
   createPipeline();
   createVertexBuffer();
-  createIndexBuffer();
   createSyncObjects();
 }
 
@@ -46,7 +44,6 @@ void closeVulkan() {
   destroyDescriptorSet();
   destroyCmdBuffers();
   destroyUniformBuffers();
-  destroyIndexBuffer();
   destroyVertexBuffer();
   destroyDepthImage();
   destroySwapchain();
