@@ -13,7 +13,7 @@
 #include "uniformBuffers.h"
 #include "vertexBuffer.h"
 
-const char *modelFile = "assets/models/gourd.obj";
+const char *modelFile = "assets/models/monkey.obj";
 
 void initVulkan() {
   loadMesh(modelFile);

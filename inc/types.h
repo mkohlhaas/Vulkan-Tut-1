@@ -14,4 +14,5 @@ typedef struct {
   alignas(16) mat4 model;
   alignas(16) mat4 view;
   alignas(16) mat4 proj;
+  alignas(16) mat4 light;
 } UniformBufferObject;
