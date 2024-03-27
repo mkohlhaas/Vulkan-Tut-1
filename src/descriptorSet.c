@@ -16,14 +16,12 @@ void destroyDescriptorSet() {
 }
 
 static void createDescriptorPool() {
-  VkDescriptorPoolSize poolSize[] = {{
-                                         .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
-                                         .descriptorCount = FRAMES_IN_FLIGHT,
-                                     },
-                                     {
-                                         .type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-                                         .descriptorCount = FRAMES_IN_FLIGHT,
-                                     }};
+  VkDescriptorPoolSize poolSize[] = {
+      {
+          .type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER,
+          .descriptorCount = FRAMES_IN_FLIGHT,
+      },
+  };
 
   VkDescriptorPoolCreateInfo poolInfo = {
       .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO,
@@ -43,15 +41,7 @@ static void createDescriptorSetLayout() {
       .stageFlags = VK_SHADER_STAGE_VERTEX_BIT,
   };
 
-  VkDescriptorSetLayoutBinding samplerLayoutBinding = {
-      .binding = 1,
-      .descriptorCount = 1,
-      .descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER,
-      .pImmutableSamplers = NULL,
-      .stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT,
-  };
-
-  VkDescriptorSetLayoutBinding bindings[] = {uboLayoutBinding, samplerLayoutBinding};
+  VkDescriptorSetLayoutBinding bindings[] = {uboLayoutBinding};
 
   VkDescriptorSetLayoutCreateInfo layoutInfo = {
       .sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO,

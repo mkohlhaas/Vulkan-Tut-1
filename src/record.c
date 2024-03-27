@@ -8,6 +8,8 @@
 #include "swapchain.h"
 #include "types.h"
 #include "vertexBuffer.h"
+#include "window.h"
+#include <stdint.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
 
@@ -69,6 +71,10 @@ static void bindBuffers() {
   // bind uniform object buffer
   vkCmdBindDescriptorSets(cmdBuffers[currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 0, 1,
                           &descriptorSets[currentFrame], 0, nullptr);
+
+  // push constants
+  vkCmdPushConstants(cmdBuffers[currentFrame], pipelineLayout, VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(uint32_t),
+                     &mode);
 }
 
 void recordCmdBuffer(image_index_t imageIndex) {

@@ -5,6 +5,8 @@
 
 extern GLFWwindow *window;
 extern bool framebufferResized;
+// Shader mode (used in fragment shader).
+extern uint32_t mode;
 
 // Creates GLFW window.
 void initGlfw();

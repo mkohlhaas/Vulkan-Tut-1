@@ -3,6 +3,7 @@
 #include "error.h"
 #include "renderpass.h"
 #include "types.h"
+#include <stdint.h>
 #include <glib.h>
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan_core.h>
@@ -65,10 +66,14 @@ void createPipeline() {
 
   // Pipeline Layout (uniform & push values)
   VkDescriptorSetLayout descriptorSetLayouts[] = {descriptorSetLayout};
+  VkPushConstantRange pushConstantRanges[] = {{VK_SHADER_STAGE_FRAGMENT_BIT, 0, sizeof(int32_t)}};
+
   VkPipelineLayoutCreateInfo pipelineLayoutCreateInfo = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
       .setLayoutCount = sizeof(descriptorSetLayouts) / sizeof(VkDescriptorSetLayout),
       .pSetLayouts = descriptorSetLayouts,
+      .pushConstantRangeCount = sizeof(pushConstantRanges) / sizeof(VkPushConstantRange),
+      .pPushConstantRanges = pushConstantRanges,
   };
 
   EH(vkCreatePipelineLayout(device, &pipelineLayoutCreateInfo, nullptr, &pipelineLayout));
@@ -139,7 +144,7 @@ void createPipeline() {
   // Rasterizer
   VkPipelineRasterizationStateCreateInfo rasterizationState = {
       .sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO,
-      .polygonMode = VK_POLYGON_MODE_FILL ,
+      .polygonMode = VK_POLYGON_MODE_FILL,
       .cullMode = VK_CULL_MODE_NONE,
       .frontFace = VK_FRONT_FACE_CLOCKWISE,
       .lineWidth = 1.0f,
