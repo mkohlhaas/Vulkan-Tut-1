@@ -54,9 +54,13 @@ void updateUniformBuffer(uint32_t currentFrame) {
   glm_mat4_identity(light);
   glm_translate(light, translate);
 
+  dbgPrint("Model Matrix:\n");
   glm_mat4_print(model, stderr);
+  dbgPrint("Camera/view Matrix:\n");
   glm_mat4_print(view, stderr);
+  dbgPrint("Projection Matrix:\n");
   glm_mat4_print(proj, stderr);
+  dbgPrint("Light Matrix:\n");
   glm_mat4_print(light, stderr);
 
   // uniform buffer object

@@ -12,10 +12,7 @@ link_directories(${GLIB2_LIBRARY_DIRS})
 link_libraries(${GLIB2_LIBRARIES})
 
 # cglm
-pkg_check_modules(CGLM REQUIRED cglm)
-include_directories(${CGLM_INCLUDE_DIRS})
-link_directories(${CGLM_LIBRARY_DIRS})
-link_libraries(${CGLM_LIBRARIES})
+add_subdirectory(3rdParty/cglm)
 
 # stb - single-file public domain libraries for C/C++
 include_directories(${PROJECT_SOURCE_DIR}/3rdParty/stb)
@@ -53,7 +50,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/vulkan.c
                                src/window.c)
 
-target_link_libraries(${PROJECT_NAME} glfw Vulkan::Vulkan stb tinyobjloader-c)
+target_link_libraries(${PROJECT_NAME} glfw cglm stb tinyobjloader-c Vulkan::Vulkan)
 target_include_directories(${PROJECT_NAME} PRIVATE inc/)
 set_property(TARGET ${PROJECT_NAME} PROPERTY C_STANDARD 23)
 
