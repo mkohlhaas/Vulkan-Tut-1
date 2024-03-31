@@ -37,6 +37,7 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/image.c
                                src/instance.c
                                src/mesh.c
+                               src/model.c
                                src/physical.c
                                src/pipeline.c
                                src/record.c
@@ -45,8 +46,10 @@ add_executable(${PROJECT_NAME} src/main.c
                                src/swapchain.c
                                src/sync.c
                                src/texture.c
+                               src/trackball.c
                                src/uniformBuffers.c
                                src/vertexBuffer.c
+                               src/view.c
                                src/vulkan.c
                                src/window.c)
 

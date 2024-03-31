@@ -1,10 +1,13 @@
 #define CGLM_FORCE_DEPTH_ZERO_TO_ONE
+
 #include "buffer.h"
 #include "device.h"
 #include "error.h"
 #include "globals.h"
+#include "model.h"
 #include "swapchain.h"
 #include "types.h"
+#include "view.h"
 #include <GLFW/glfw3.h>
 #include <cglm/cglm.h>
 #include <string.h>
@@ -27,21 +30,8 @@ void createUniformBuffers() {
 }
 
 void updateUniformBuffer(uint32_t currentFrame) {
-  double elapsedTime = glfwGetTime();
-  dbgPrint("Elapsed time = %f seconds\r", elapsedTime);
-
-  // model matrix
-  mat4 model;
-  glm_mat4_identity(model);
-  vec3 axis = {0.0f, 0.0f, 1.0f};
-  glm_rotate(model, elapsedTime * glm_rad(90.0f / 2.0f), axis);
-
-  // view matrix
-  mat4 view;
-  vec3 eye = {2.0f, 2.0f, 1.5f};
-  vec3 center = {0.0f, 0.0f, 0.0f};
-  vec3 up = {0.0f, 0.0f, 1.0f};
-  glm_lookat(eye, center, up, (vec4 *)&view);
+  updateModelMatrix();
+  updateViewMatrix();
 
   // projection matrix
   mat4 proj;
@@ -49,26 +39,23 @@ void updateUniformBuffer(uint32_t currentFrame) {
   proj[1][1] *= -1;
 
   // light
-  mat4 light;
-  vec3 translate = {1.0f, 0.0f, 0.0f};
-  glm_mat4_identity(light);
-  glm_translate(light, translate);
+  vec4 light = {0.0f, 10.0f, 0.0f, 1.0f};
 
-  dbgPrint("Model Matrix:\n");
-  glm_mat4_print(model, stderr);
-  dbgPrint("Camera/view Matrix:\n");
-  glm_mat4_print(view, stderr);
-  dbgPrint("Projection Matrix:\n");
-  glm_mat4_print(proj, stderr);
-  dbgPrint("Light Matrix:\n");
-  glm_mat4_print(light, stderr);
+  // dbgPrint("Model Matrix:\n");
+  // glm_mat4_print(model, stderr);
+  // dbgPrint("Camera/view Matrix:\n");
+  // glm_mat4_print(viewMatrix, stderr);
+  // dbgPrint("Projection Matrix:\n");
+  // glm_mat4_print(proj, stderr);
+  // dbgPrint("Light Matrix:\n");
+  // glm_mat4_print(light, stderr);
 
   // uniform buffer object
   UniformBufferObject ubo;
-  glm_mat4_copy(model, ubo.model);
-  glm_mat4_copy(view, ubo.view);
+  glm_mat4_copy(modelMatrix, ubo.model);
+  glm_mat4_copy(viewMatrix, ubo.view);
   glm_mat4_copy(proj, ubo.proj);
-  glm_mat4_copy(light, ubo.light);
+  glm_vec4_copy(light, ubo.light);
 
   memcpy(uniformBuffersMapped[currentFrame], &ubo, sizeof(ubo));
 }

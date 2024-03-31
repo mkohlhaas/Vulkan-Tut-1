@@ -4,7 +4,7 @@ layout(binding = 0) uniform UniformBufferObject {
     mat4 model;
     mat4 view;
     mat4 proj;
-    vec3 light;
+    vec4 light;
 } ubo;
 
 layout(location = 0) in vec3 position;
@@ -20,5 +20,5 @@ void main() {
 
     fragNormal = (ubo.view * ubo.model * vec4(normal, 0.0f)).xyz;
     fragView = -(ubo.view * worldPos).xyz;
-    fragLight = mat3(ubo.view) * (ubo.light - vec3(worldPos));
+    fragLight = (ubo.view * ubo.model * ubo.light).xyz;
 }
